@@ -1,0 +1,20 @@
+{
+  "name": "manchester-pong",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:ZackMattor/manchester-pong.git"
+  },
+  "author": "Zack Mattor",
+  "license": "MIT",
+  "homepage": "https://github.com/ZackMattor/manchester-pong",
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
