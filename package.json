@@ -14,7 +14,8 @@
   "license": "MIT",
   "homepage": "https://github.com/ZackMattor/manchester-pong",
   "dependencies": {
+    "express": "^4.14.0",
+    "ws": "^1.1.1"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

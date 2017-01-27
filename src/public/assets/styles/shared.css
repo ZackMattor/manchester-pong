@@ -1,0 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.state {
+  display: none;
+}
+
+.state.active {
+  display: block;
+}
