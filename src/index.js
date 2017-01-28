@@ -1,10 +1,20 @@
 // const GameEngine = require('');
 const express = require('express')
+const WebSocket = require('ws');
+const http = require('http');
+const url = require('url');
+const PongServer = require('./server/pong_server.js');
 
-let app = express()
+
+const app = express()
+
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 app.use(express.static('src/public'));
 
-app.listen(3000, function () {
+server.listen(3000, () => {
   console.log('Example app listening on port 3000!')
 });
+
+let pong_server = new PongServer(wss);

@@ -1,5 +1,3 @@
-static WebSocket = require('ws');
-
 // Inbound
 // {
 //   game_id: 'sadf-sa-asdf',
@@ -29,24 +27,20 @@ static WebSocket = require('ws');
 // }
 
 class PongServer {
-  constructor() {
+  constructor(wss) {
     this.game_instances = {};
 
-    this.wss = new WebSocket.Server({
-      perMessageDeflate: false,
-      port: 8080
-    });
+    this.wss = wss;
 
     wss.on('connection', function connection(ws) {
-      ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
+      ws.on('message', (message) => {
+        let data = JSON.parse(message);
+        console.log(JSON.stringify(data, null, 4));
       });
 
-      ws.send('something');
+      //ws.send('something');
     });
   }
-
-
 }
 
-exports.default = PongServer;
+module.exports = PongServer;
