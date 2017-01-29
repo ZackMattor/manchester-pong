@@ -4,19 +4,17 @@ $(() => {
   var game_socket = new WebSocket(socket_url());
 
   game_socket.onmessage = function(message) {
+    console.log(message);
+    let data = JSON.parse(message.data);
+
+    switch(data.route) {
+      case 'ping':
+        console.log('?');
+        game_socket.send(JSON.stringify({route: 'pong', data: null}));
+        break;
+    }
     console.log(message.data);
   };
-
-  $('#connect-button').click(() => {
-    let data = {
-      route: 'player-connection',
-      data: {
-        token: $('input[name="game-token"]').val()
-      }
-    };
-
-    game_socket.send(JSON.stringify(data));
-  });
 });
 
 var socket_url = function() {
@@ -26,7 +24,7 @@ var socket_url = function() {
   } else {
     new_uri = "ws:";
   }
-  new_uri += "//" + loc.host + '/controller';
+  new_uri += "//" + loc.host + '/game';
 
   return new_uri;
 }
