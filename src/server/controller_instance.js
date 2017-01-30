@@ -9,6 +9,15 @@ class ControllerInstance extends EventEmitter{
     this.con = con;
 
     con.on('close', this.shutdown_instance.bind(this))
+    con.on('bind-attempt', this.bind_attempt.bind(this))
+  }
+
+  bind_attempt(data) {
+    this.emit('bind-attempt', data.token);
+  }
+
+  bind_status(bind_successful) {
+    this.con.send('bind-status', bind_successful);
   }
 
   shutdown_instance() {

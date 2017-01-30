@@ -8,6 +8,6 @@ $(() => {
       token: $('input[name="game-token"]').val()
     };
 
-    game_connection.send('player-connection', data);
+    game_connection.send('bind-attempt', data);
   });
 });

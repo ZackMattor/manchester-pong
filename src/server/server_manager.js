@@ -55,6 +55,7 @@ class ServerManager {
         break;
       case '/controller':
         instance = (new ControllerInstance(con));
+        instance.on('bind-attempt', this.bind_attempt.bind(this));
         break;
     }
 
@@ -62,6 +63,10 @@ class ServerManager {
       instance.on('close', this.remove_connection.bind(this));
       this.connections[con.id].instance = instance;
     }
+  }
+
+  bind_attempt(token) {
+    console.log(`Player trying to join a game with ${token}`);
   }
 
   remove_connection(id) {

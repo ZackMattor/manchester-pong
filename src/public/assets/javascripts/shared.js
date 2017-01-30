@@ -35,6 +35,7 @@ class GameConnection {
       data: data || null
     };
 
+    console.log(`Sending ${route}`);
     this.ws.send(JSON.stringify(packet));
   }
 
