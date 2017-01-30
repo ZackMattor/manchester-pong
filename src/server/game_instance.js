@@ -91,8 +91,6 @@ class GameInstance extends EventEmitter{
     data.ball = this.ball;
     data.gamefield = this.gamefield;
 
-    console.log(data);
-
     this.instance_connection.send('game_state', data);
   }
 

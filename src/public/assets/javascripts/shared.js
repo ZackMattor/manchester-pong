@@ -1,6 +1,8 @@
 class GameConnection {
-  constructor() {
-    this.ws = new WebSocket(this._socket_url());
+  constructor(namespace) {
+    console.log(namespace);
+    console.log(this._socket_url(namespace));
+    this.ws = new WebSocket(this._socket_url(namespace));
     this.ws.onmessage = this.on_message.bind(this);
   }
 
@@ -36,7 +38,7 @@ class GameConnection {
     this.ws.send(JSON.stringify(packet));
   }
 
-  _socket_url() {
+  _socket_url(namespace) {
     let loc = window.location
     let new_uri;
 
@@ -45,7 +47,8 @@ class GameConnection {
     } else {
       new_uri = "ws:";
     }
-    new_uri += "//" + loc.host + '/game';
+
+    new_uri += `//${loc.host}/${namespace}`;
 
     return new_uri;
   }

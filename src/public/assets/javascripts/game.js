@@ -1,7 +1,7 @@
 $(() => {
   console.log('Welcome to the controller');
 
-  let game_connection = new GameConnection();
+  let game_connection = new GameConnection('game');
 
   game_connection.on_game_state = function(data) {
     $('#join_token').html(data.current_join_token);
