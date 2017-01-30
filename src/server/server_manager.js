@@ -1,30 +1,3 @@
-// Inbound
-// {
-//   game_id: 'sadf-sa-asdf',
-//   route: 'key-state' || 'heartbeat' || 'disconnect' || 'register',
-//   data: {
-//     paddle-up: true,
-//     paddle-down: false
-//   }
-// }
-//
-// Outbound - player
-// {
-//   route: 'player-connected' || 'player-disconnected' || 'game-state' || 'register',
-//   data: {
-//     paddle-up: true,
-//     paddle-down: false
-//   }
-// }
-//
-// Outbound - game-instance
-// {
-//   route: 'player-connected' || 'player-disconnected' || 'game-state' || 'register',
-//   data: {
-//     paddle-up: true,
-//     paddle-down: false
-//   }
-// }
 const url = require('url');
 const GameInstance = require('./game_instance.js');
 const ControllerInstance = require('./controller_instance.js');
@@ -55,7 +28,7 @@ class ServerManager {
         break;
       case '/controller':
         instance = (new ControllerInstance(con));
-        instance.on('bind-attempt', this.bind_attempt.bind(this));
+        instance.on('bind_attempt', this.bind_attempt.bind(this));
         break;
     }
 
@@ -65,8 +38,11 @@ class ServerManager {
     }
   }
 
-  bind_attempt(token) {
-    console.log(`Player trying to join a game with ${token}`);
+  bind_attempt(bind_obj) {
+    console.log(`Player trying to join a game with ${bind_obj.token}`);
+
+    // TODO - this
+    bind_obj.instance.bind_status(false);
   }
 
   remove_connection(id) {

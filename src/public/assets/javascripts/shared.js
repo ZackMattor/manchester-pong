@@ -11,8 +11,6 @@ class GameConnection {
     let data = packet.data;
     let route = packet.route;
 
-    console.log(`Recieved ${route} packet.`);
-
     switch(route) {
       case 'ping':
         this.send('pong');
@@ -34,8 +32,6 @@ class GameConnection {
       route: route,
       data: data || null
     };
-
-    console.log(`Sending ${route}`);
     this.ws.send(JSON.stringify(packet));
   }
 
