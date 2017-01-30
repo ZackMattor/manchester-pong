@@ -4,6 +4,12 @@ $(() => {
   let game_connection = new GameConnection('controller');
 
   game_connection.on_bind_status = function(data) {
+    if(!data.was_successful) {
+      $('input[name="game-token"]').addClass('error');
+
+    } else {
+
+    }
     console.log(data);
   }
 
