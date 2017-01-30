@@ -13,3 +13,36 @@ body {
 .state.active {
   display: block;
 }
+
+#gamefield {
+  width: 500px;
+  height: 200px;
+  position: relative;
+  border: 2px solid black;
+  margin: 10px auto;
+}
+
+.entity {
+  position: absolute;
+}
+
+#p1, #p2 {
+  height: 20px;
+  width: 5px;
+  border: 2px solid black;
+}
+
+#ball {
+  width: 5px;
+  height: 5px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+#join_token {
+  left: 0;
+  right: 0;
+  top: -25px;
+  font-size: 20px;
+  text-align: center;
+}
