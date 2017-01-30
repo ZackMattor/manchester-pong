@@ -27,7 +27,7 @@ class Connection extends EventEmitter {
   send(route, data) {
     let packet = {
       route: route,
-      data: data
+      data: data || null
     };
 
     if(this.ws.readyState === WebSocket.OPEN) {
