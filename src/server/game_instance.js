@@ -11,7 +11,7 @@ class GameInstance extends EventEmitter{
 
     this.players = {
       p1: {
-        y: 50,
+        y: 100,
         name: 'Bot',
         connection: null
       },
@@ -24,12 +24,51 @@ class GameInstance extends EventEmitter{
 
     this.ball = {
       x: 50,
-      y: 50
-    }
+      y: 50,
+      size: 10,
+      vx: 2,
+      vy: 2
+    };
 
-    setInterval(this.send_game_state.bind(this), (1000 / 30));
+    this.gamefield = {
+      width: 500,
+      height: 300,
+      paddle_height: 20,
+      paddle_offset: 40
+    };
+
+    this.intervals = [];
+    this.intervals.push(setInterval(this.send_game_state.bind(this), (1000 / 34)));
+    this.intervals.push(setInterval(this.game_tick.bind(this), (1000 / 60)));
+    this.intervals.push(setInterval(this.generate_token.bind(this), (1000 * 10)));
+
+    this.generate_token();
 
     console.log('new game instance');
+  }
+
+  generate_token() {
+    var token = parseInt(Math.random() * (9999-1000) + 1000);
+    this.active_tokens.unshift(token);
+
+    if(this.active_tokens.length > 4) {
+      this.active_tokens.pop();
+    }
+  }
+
+  game_tick() {
+    this.players.p2.y+= 0.1;
+
+    let fx = this.ball.x + this.ball.vx;
+    let fy = this.ball.y + this.ball.vy;
+    let ball_size = this.ball.size;
+
+    // Wall Detection
+    if(fx + ball_size > this.gamefield.width || fx < 0) this.ball.vx *= -1;
+    if(fy + ball_size > this.gamefield.height || fy < 0) this.ball.vy *= -1;
+
+    this.ball.x += this.ball.vx;
+    this.ball.y += this.ball.vy;
   }
 
   send_game_state() {
@@ -50,6 +89,7 @@ class GameInstance extends EventEmitter{
     };
 
     data.ball = this.ball;
+    data.gamefield = this.gamefield;
 
     console.log(data);
 
@@ -57,6 +97,8 @@ class GameInstance extends EventEmitter{
   }
 
   shutdown_instance() {
+    this.intervals.forEach((interval) => clearInterval(interval));
+
     this.emit('close', this.instance_connection);
   }
 }
