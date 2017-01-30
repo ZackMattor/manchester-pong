@@ -32,6 +32,7 @@ const Connection = require('./connection.js');
 class ServerManager {
   constructor(wss) {
     this.game_instances = {};
+    this.unbound_controllers = [];
 
     this.wss = wss;
 
@@ -45,21 +46,21 @@ class ServerManager {
     switch(location.href) {
       case '/game':
          let instance = (new GameInstance(con));
+         instance.on('close', this.remove_instance.bind(this));
+
+         this.game_instances[con] = instance;
         break;
       case '/controller':
+        this.unbound_controllers.push(con);
+
         break;
     }
-
-    //ws.on('message', (message) => {
-    //  let data = JSON.parse(message);
-    //  console.log(JSON.stringify(data, null, 4));
-    //});
   }
 
-  remove_instance(ws) {
-    console.log('Removing client!');
+  remove_instance(con) {
+    console.log('Removing game instance!');
 
-    this.game_instances[ws] = null;
+    this.game_instances[con] = null;
   }
 }
 

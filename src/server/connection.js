@@ -1,10 +1,12 @@
 const EventEmitter = require('events');
+const WebSocket = require('ws');
 
 class Connection extends EventEmitter {
   constructor(ws) {
     super();
 
     ws.on('message', this.on_message.bind(this));
+    ws.on('close', this._disconnect.bind(this));
 
     this.ws = ws;
     this.start_heartbeat();
@@ -28,7 +30,9 @@ class Connection extends EventEmitter {
       data: data
     };
 
-    this.ws.send(JSON.stringify(packet));
+    if(this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify(packet));
+    }
   }
 
   start_heartbeat() {
@@ -42,8 +46,14 @@ class Connection extends EventEmitter {
       this.send('ping', null);
       count++;
 
-      if(count > 5) { this.emit('close'); }
+      if(count > 5) { this._disconnect() }
     }, 500);
+  }
+
+  _disconnect() {
+    console.log('Connection Closed');
+    clearInterval(this.heartbeat_interval);
+    this.emit('close', this.ws);
   }
 }
 
