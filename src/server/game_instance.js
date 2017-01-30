@@ -7,7 +7,7 @@ class GameInstance extends EventEmitter{
     con.on('close', this.shutdown_instance.bind(this))
 
     this.active_tokens = ['foo'];
-    this.instance_connection = con;
+    this.con = con;
 
     this.players = {
       p1: {
@@ -91,13 +91,13 @@ class GameInstance extends EventEmitter{
     data.ball = this.ball;
     data.gamefield = this.gamefield;
 
-    this.instance_connection.send('game_state', data);
+    this.con.send('game_state', data);
   }
 
   shutdown_instance() {
     this.intervals.forEach((interval) => clearInterval(interval));
 
-    this.emit('close', this.instance_connection);
+    this.emit('close', this.con.id);
   }
 }
 

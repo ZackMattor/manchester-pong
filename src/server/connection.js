@@ -5,6 +5,7 @@ class Connection extends EventEmitter {
   constructor(ws) {
     super();
 
+    this.id = this._uuid();
     ws.on('message', this.on_message.bind(this));
     ws.on('close', this._disconnect.bind(this));
 
@@ -54,6 +55,16 @@ class Connection extends EventEmitter {
     console.log('Connection Closed');
     clearInterval(this.heartbeat_interval);
     this.emit('close', this.ws);
+  }
+
+  _uuid() {
+    var s4 = function() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    };
+
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
   }
 }
 

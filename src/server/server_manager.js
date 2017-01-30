@@ -32,8 +32,7 @@ const Connection = require('./connection.js');
 
 class ServerManager {
   constructor(wss) {
-    this.game_instances = {};
-    this.controller_instances = {};
+    this.connections = {};
 
     this.wss = wss;
 
@@ -41,36 +40,34 @@ class ServerManager {
   }
 
   on_connection_open(ws) {
-    const location = url.parse(ws.upgradeReq.url, true);
     let con = new Connection(ws);
     let instance;
 
-    switch(location.href) {
+    this.connections[con.id] = {
+      con: con,
+      instance: null
+    };
+
+    const namespace = url.parse(ws.upgradeReq.url, true).href;
+    switch(namespace) {
       case '/game':
         instance = (new GameInstance(con));
-        instance.on('close', this.remove_game_instance.bind(this));
-        this.game_instances[con] = instance;
         break;
       case '/controller':
         instance = (new ControllerInstance(con));
-        instance.on('close', this.remove_controller_instance.bind(this));
-        this.controller_instances[con] = instance;
         break;
+    }
+
+    if(instance) {
+      instance.on('close', this.remove_connection.bind(this));
+      this.connections[con.id].instance = instance;
     }
   }
 
-  remove_game_instance(con) {
-    console.log('Removing game instance!');
+  remove_connection(id) {
+    console.log(`Removing ${this.connections[id].instance.constructor.name} from the connections!`);
 
-    this.game_instances[con] = null;
-  }
-
-  remove_controller_instance(con) {
-    console.log('Removing controller instance!');
-
-    this.controller_instances[con] = null;
-
-    console.log(Object.keys(this.controller_instances).length);
+    this.connections[id] = null;
   }
 }
 

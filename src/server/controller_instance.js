@@ -12,7 +12,7 @@ class ControllerInstance extends EventEmitter{
   }
 
   shutdown_instance() {
-    this.emit('close', this.con);
+    this.emit('close', this.con.id);
   }
 }
 
