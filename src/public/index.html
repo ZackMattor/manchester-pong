@@ -1,7 +1,9 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Manchester Pong | Controller</title>
     <link rel="stylesheet" type="text/css" href="/assets/styles/shared.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="/assets/javascripts/shared.js"></script>
     <script src="/assets/javascripts/controller.js"></script>
@@ -16,8 +18,17 @@
     </div>
 
     <div class="state" id="state-controller">
-      <div id="paddle-up">UP</div>
-      <div id="paddle-down">DOWN</div>
+      <div id="paddle-up" class="table">
+        <div class="cell">
+          <div>UP</div>
+        </div>
+      </div>
+
+      <div id="paddle-down" class="table">
+        <div class="cell">
+          <div>DOWN</div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

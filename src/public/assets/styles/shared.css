@@ -32,6 +32,10 @@ body {
   border: 2px solid black;
 }
 
+#p2-name {
+  right: 0;
+}
+
 #ball {
   width: 5px;
   height: 5px;
@@ -49,4 +53,30 @@ body {
 
 input.error {
   border: 1px solid red;
+}
+
+#state-controller {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+}
+
+.table {
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  height: 50%;
+  background-color: red;
+  display: table;
+  width: 100%;
+}
+
+.cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.cell > div {
+  text-align: center;
 }

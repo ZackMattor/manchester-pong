@@ -26,6 +26,9 @@ $(() => {
       height: data.gamefield.paddle_height
     });
 
+    $('#p1-name').html(data.p1.name);
+    $('#p2-name').html(data.p2.name);
+
     $('#p2').css({
       top: data.p2.y,
       left: width - 10,

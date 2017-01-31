@@ -13,12 +13,12 @@ class GameInstance extends EventEmitter{
       p1: {
         y: 100,
         name: 'Bot',
-        connection: null
+        controller_instance: null
       },
       p2: {
         y: 50,
         name: 'Bot',
-        connection: null
+        controller_instance: null
       }
     };
 
@@ -92,6 +92,37 @@ class GameInstance extends EventEmitter{
     data.gamefield = this.gamefield;
 
     this.con.send('game_state', data);
+  }
+
+  is_token_valid(token) {
+    console.log(this.active_tokens);
+    return this.active_tokens.indexOf(parseInt(token)) !== -1;
+  }
+
+  is_game_full() {
+    return (!!this.players.p1.controller_instance && !!this.players.p2.controller_instance);
+  }
+
+  join_game(controller_instance) {
+    if(!this.players.p1.controller_instance) {
+      controller_instance.on('close', () => {
+        this.players.p1.controller_instance = null;
+        this.players.p1.name = "Bot";
+      });
+
+      this.players.p1.controller_instance = controller_instance;
+      this.players.p1.name = "Player 1";
+    } else if(!this.players.p2.controller_instance) {
+      controller_instance.on('close', () => {
+        this.players.p2.controller_instance = null;
+        this.players.p2.name = "Bot";
+      });
+
+      this.players.p2.controller_instance = controller_instance;
+      this.players.p2.name = "Player 2";
+    }
+
+    console.log(this.players);
   }
 
   shutdown_instance() {

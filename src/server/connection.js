@@ -55,6 +55,7 @@ class Connection extends EventEmitter {
     console.log('Connection Closed');
     clearInterval(this.heartbeat_interval);
     this.emit('close', this.ws);
+    this.removeAllListeners();
   }
 
   _uuid() {

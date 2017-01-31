@@ -40,15 +40,33 @@ class ServerManager {
 
   bind_attempt(bind_obj) {
     console.log(`Player trying to join a game with ${bind_obj.token}`);
+    let success = false;
+    let controller_instance = bind_obj.instance;
 
-    // TODO - this
-    bind_obj.instance.bind_status(false);
+    for(var id in this.connections) {
+      let instance = this.connections[id].instance
+
+      if(instance.constructor.name == 'GameInstance') {
+        console.log(instance.is_token_valid(bind_obj.token));
+        if(instance.is_token_valid(bind_obj.token) && !instance.is_game_full()) {
+          console.log('We should connect');
+          controller_instance.bind_status(true);
+          instance.join_game(controller_instance);
+
+          success = true;
+        }
+      }
+    }
+
+    if(!success) {
+      controller_instance.bind_status(false);
+    }
   }
 
   remove_connection(id) {
     console.log(`Removing ${this.connections[id].instance.constructor.name} from the connections!`);
 
-    this.connections[id] = null;
+    delete this.connections[id];
   }
 }
 
