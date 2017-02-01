@@ -13,11 +13,13 @@ class GameInstance extends EventEmitter{
       p1: {
         y: 100,
         name: 'Bot',
+        score: 0,
         controller_instance: null
       },
       p2: {
         y: 50,
         name: 'Bot',
+        score: 0,
         controller_instance: null
       }
     };
@@ -64,7 +66,13 @@ class GameInstance extends EventEmitter{
     let ball_size = this.ball.size;
 
     // Wall Detection
-    if(fx + ball_size > this.gamefield.width || fx < 0) this.ball.vx *= -1;
+    if(fx + ball_size > this.gamefield.width || fx < 0) {
+      if(fx + ball_size > this.gamefield.width) this.players.p1.score++;
+      if(fx < 0) this.players.p2.score++;
+
+      this.ball.vx *= -1;
+    }
+
     if(fy + ball_size > this.gamefield.height || fy < 0) this.ball.vy *= -1;
 
     this.ball.x += this.ball.vx;
@@ -80,10 +88,12 @@ class GameInstance extends EventEmitter{
       current_join_token: current_token,
       p1: {
         y: p1.y,
+        score: p1.score,
         name: p1.name
       },
       p2: {
         y: p2.y,
+        score: p2.score,
         name: p2.name
       }
     };

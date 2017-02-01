@@ -27,7 +27,10 @@ $(() => {
     });
 
     $('#p1-name').html(data.p1.name);
+    $('#p1-score').html(data.p1.score);
+
     $('#p2-name').html(data.p2.name);
+    $('#p2-score').html(data.p2.score);
 
     $('#p2').css({
       top: data.p2.y,

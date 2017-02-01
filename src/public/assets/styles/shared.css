@@ -32,8 +32,12 @@ body {
   border: 2px solid black;
 }
 
-#p2-name {
+.right-label {
   right: 0;
+}
+
+.left-label {
+  left: 0;
 }
 
 #ball {
