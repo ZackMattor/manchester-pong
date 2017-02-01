@@ -1,41 +1,67 @@
 let set_state = function(name) {
   $('.state').hide();
   $(`#state-${name}`).show();
-}
+};
 
-$(() => {
-  console.log('Welcome to the controller');
+var Controller = {
+  init() {
+    console.log('Welcome to the controller');
 
-  let game_connection = new GameConnection('controller');
+    this.game_connection = new GameConnection('controller');
+    this.key_state = {
+      key_up: false,
+      key_down: false
+    };
 
-  game_connection.on_bind_status = function(data) {
+    // Deal with messages from the server
+    this.game_connection.on_bind_status = this.on_bind_status.bind(this);
+
+    $('.control-button').on('mousedown', this.on_controller_button_press.bind(this));
+    $('.control-button').on('mouseup', this.on_controller_button_release.bind(this));
+
+
+    $('#connect-button').click(this.bind_attempt.bind(this));
+
+  },
+
+  bind_attempt() {
+    let data = {
+      token: $('input[name="game-token"]').val()
+    };
+
+    this.game_connection.send('bind_attempt', data);
+  },
+
+  on_bind_status(data) {
+    console.log(data);
+
     if(!data.was_successful) {
       $('input[name="game-token"]').addClass('error');
     } else {
       set_state('controller');
     }
-    console.log(data);
+  },
+
+  on_controller_button_press(evt) {
+    let $ele = $(evt.currentTarget);
+
+    $ele.css('background-color', 'blue');
+    this.set_key_state($ele.data('key-name'), true);
+  },
+
+  on_controller_button_release(evt) {
+    let $ele = $(evt.currentTarget);
+
+    $ele.css('background-color', 'red');
+    this.set_key_state($ele.data('key-name'), false);
+  },
+
+  set_key_state(key, value) {
+    this.key_state[key] = value;
+
+    console.log(this.key_state);
+    this.game_connection.send('key_state', this.key_state);
   }
+};
 
-  $('#connect-button').click(() => {
-    let data = {
-      token: $('input[name="game-token"]').val()
-    };
-
-    game_connection.send('bind_attempt', data);
-  });
-
-  $('#paddle-up').on('touchstart', (evt) => {
-    $(evt.currentTarget).css('background-color', 'blue');
-  });
-  $('#paddle-up').on('touchend', (evt) => {
-    $(evt.currentTarget).css('background-color', 'red');
-  });
-
-  $('#paddle-down').on('touchstart', (evt) => {
-    $(evt.currentTarget).css('background-color', 'blue');
-  });
-  $('#paddle-down').on('touchend', (evt) => {
-    $(evt.currentTarget).css('background-color', 'red');
-  });
-});
+$(Controller.init.bind(Controller));

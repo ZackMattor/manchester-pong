@@ -10,10 +10,16 @@ class ControllerInstance extends EventEmitter{
 
     con.on('close', this.shutdown_instance.bind(this))
     con.on('bind_attempt', this.bind_attempt.bind(this))
+    con.on('key_state', this.new_key_state.bind(this))
   }
 
   bind_attempt(data) {
     this.emit('bind_attempt', {token: data.token, instance: this});
+  }
+
+  new_key_state(key_state) {
+    console.log("Recieved key state from controller!");
+    console.log(key_state);
   }
 
   bind_status(bind_successful) {
