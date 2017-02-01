@@ -27,7 +27,7 @@ class GameInstance extends EventEmitter{
     this.ball = {
       x: 50,
       y: 50,
-      size: 10,
+      size: 20,
       vx: 2,
       vy: 2
     };
@@ -35,7 +35,7 @@ class GameInstance extends EventEmitter{
     this.gamefield = {
       width: 500,
       height: 300,
-      paddle_height: 20,
+      paddle_height: 50,
       paddle_offset: 40
     };
 
@@ -59,13 +59,43 @@ class GameInstance extends EventEmitter{
   }
 
   game_tick() {
-    this.players.p2.y+= 0.1;
-
     let fx = this.ball.x + this.ball.vx;
     let fy = this.ball.y + this.ball.vy;
     let ball_size = this.ball.size;
 
+    // Process player movement
+    let p1_instance = this.players.p1.controller_instance;
+    let p2_instance = this.players.p2.controller_instance;
+    let player_speed = 2;
+
+    for(var key in this.players) {
+      let player = this.players[key];
+      let player_instance = player.controller_instance;
+
+      if(player_instance) {
+        if(player_instance.get_key_state('key_up')) {
+          player.y -= player_speed;
+        }
+
+        if(player_instance.get_key_state('key_down')) {
+          player.y += player_speed;
+        }
+      }
+
+    }
+
+
+    if(p2_instance) {
+      if(p2_instance.get_key_state('key_up')) {
+        this.players.p2.y -= 2;
+      } else if(p2_instance.get_key_state('key_down')) {
+        this.players.p2.y += 2;
+      }
+    }
+
+
     // Wall Detection
+    if(fy + ball_size > this.gamefield.height || fy < 0) this.ball.vy *= -1;
     if(fx + ball_size > this.gamefield.width || fx < 0) {
       if(fx + ball_size > this.gamefield.width) this.players.p1.score++;
       if(fx < 0) this.players.p2.score++;
@@ -73,8 +103,7 @@ class GameInstance extends EventEmitter{
       this.ball.vx *= -1;
     }
 
-    if(fy + ball_size > this.gamefield.height || fy < 0) this.ball.vy *= -1;
-
+    // Process ball movement
     this.ball.x += this.ball.vx;
     this.ball.y += this.ball.vy;
   }

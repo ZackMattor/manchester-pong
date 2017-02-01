@@ -1,12 +1,13 @@
 const EventEmitter = require('events');
 
-class ControllerInstance extends EventEmitter{
+class ControllerInstance extends EventEmitter {
   constructor(con) {
     super();
 
     console.log('New Controller Instance');
 
     this.con = con;
+    this.key_state = null;
 
     con.on('close', this.shutdown_instance.bind(this))
     con.on('bind_attempt', this.bind_attempt.bind(this))
@@ -20,6 +21,7 @@ class ControllerInstance extends EventEmitter{
   new_key_state(key_state) {
     console.log("Recieved key state from controller!");
     console.log(key_state);
+    this.key_state = key_state;
   }
 
   bind_status(bind_successful) {
@@ -29,6 +31,12 @@ class ControllerInstance extends EventEmitter{
 
   shutdown_instance() {
     this.emit('close', this.con.id);
+  }
+
+  get_key_state(key_name) {
+    if(!this.key_state) return false;
+
+    return this.key_state[key_name];
   }
 }
 
