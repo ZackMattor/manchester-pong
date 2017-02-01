@@ -90,12 +90,12 @@ class GameInstance extends EventEmitter{
     let bfy = this.ball.y + this.ball.vy;
 
     in_p1 = bfx < this.gamefield.paddle_offset;
-    in_p1 = in_p1 && bfy > player.y;
+    in_p1 = in_p1 && (bfy + this.ball.size) > player.y;
     in_p1 = in_p1 && bfy < (player.y + this.gamefield.paddle_height);
 
     player = this.players.p2;
     in_p2 = bfx > (this.gamefield.width - this.gamefield.paddle_offset - this.ball.size);
-    in_p2 = in_p2 && bfy > player.y;
+    in_p2 = in_p2 && (bfy + this.ball.size) > player.y;
     in_p2 = in_p2 && bfy < (player.y + this.gamefield.paddle_height);
 
     if(in_p1 || in_p2) {
