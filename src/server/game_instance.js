@@ -27,7 +27,7 @@ class GameInstance extends EventEmitter{
     this.ball = {
       x: 50,
       y: 50,
-      size: 20,
+      size: 15,
       vx: 2,
       vy: 2
     };
@@ -36,7 +36,7 @@ class GameInstance extends EventEmitter{
       width: 500,
       height: 300,
       paddle_height: 50,
-      paddle_offset: 40
+      paddle_offset: 30
     };
 
     this.intervals = [];
@@ -81,18 +81,26 @@ class GameInstance extends EventEmitter{
           player.y += player_speed;
         }
       }
-
     }
 
+    // Paddle hit detection
+    let in_p1, in_p2;
+    let player = this.players.p1;
+    let bfx = this.ball.x + this.ball.vx;
+    let bfy = this.ball.y + this.ball.vy;
 
-    if(p2_instance) {
-      if(p2_instance.get_key_state('key_up')) {
-        this.players.p2.y -= 2;
-      } else if(p2_instance.get_key_state('key_down')) {
-        this.players.p2.y += 2;
-      }
+    in_p1 = bfx < this.gamefield.paddle_offset;
+    in_p1 = in_p1 && bfy > player.y;
+    in_p1 = in_p1 && bfy < (player.y + this.gamefield.paddle_height);
+
+    player = this.players.p2;
+    in_p2 = bfx > (this.gamefield.width - this.gamefield.paddle_offset - this.ball.size);
+    in_p2 = in_p2 && bfy > player.y;
+    in_p2 = in_p2 && bfy < (player.y + this.gamefield.paddle_height);
+
+    if(in_p1 || in_p2) {
+      this.ball.vx *= -1;
     }
-
 
     // Wall Detection
     if(fy + ball_size > this.gamefield.height || fy < 0) this.ball.vy *= -1;

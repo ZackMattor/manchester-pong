@@ -11,7 +11,8 @@ $(() => {
       width: data.gamefield.width
     });
 
-    let width = $('#gamefield').width();
+    let field_width = $('#gamefield').width();
+    let paddle_width = 5;
 
     $('#ball').css({
       top: data.ball.y,
@@ -22,7 +23,8 @@ $(() => {
 
     $('#p1').css({
       top: data.p1.y,
-      left: 10,
+      left: data.gamefield.paddle_offset - paddle_width,
+      width: paddle_width,
       height: data.gamefield.paddle_height
     });
 
@@ -34,7 +36,8 @@ $(() => {
 
     $('#p2').css({
       top: data.p2.y,
-      left: width - 10,
+      left: field_width - data.gamefield.paddle_offset,
+      width: paddle_width,
       height: data.gamefield.paddle_height
     });
   }
