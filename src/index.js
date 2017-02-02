@@ -10,8 +10,10 @@ const wss = new WebSocket.Server({ server });
 
 app.use(express.static('src/public'));
 
-server.listen(3000, () => {
-  console.log('Example app listening on port 3000!');
+let port = process.env.MANCHESTER_PONG_PORT || 3000;
+
+server.listen(port, () => {
+  console.log(`Example app listening on port ${port}!`);
 });
 
 let pong_server = new ServerManager(wss);
