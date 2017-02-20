@@ -64,8 +64,6 @@ class GameInstance extends EventEmitter{
     let ball_size = this.ball.size;
 
     // Process player movement
-    let p1_instance = this.players.p1.controller_instance;
-    let p2_instance = this.players.p2.controller_instance;
     let player_speed = 2;
 
     for(var key in this.players) {
@@ -74,11 +72,11 @@ class GameInstance extends EventEmitter{
 
       if(player_instance) {
         if(player_instance.get_key_state('key_up')) {
-          player.y -= player_speed;
+          if(player.y - player_speed > 0) player.y -= player_speed;
         }
 
         if(player_instance.get_key_state('key_down')) {
-          player.y += player_speed;
+          if(player.y + player_speed + this.gamefield.paddle_height < this.gamefield.height) player.y += player_speed;
         }
       }
     }
