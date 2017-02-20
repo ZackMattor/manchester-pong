@@ -74,6 +74,10 @@ input.error {
   background-color: red;
   display: table;
   width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .cell {

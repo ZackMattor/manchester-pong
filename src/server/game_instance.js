@@ -59,9 +59,11 @@ class GameInstance extends EventEmitter{
   }
 
   game_tick() {
-    let fx = this.ball.x + this.ball.vx;
-    let fy = this.ball.y + this.ball.vy;
+    let bfx = this.ball.x + this.ball.vx;
+    let bfy = this.ball.y + this.ball.vy;
     let ball_size = this.ball.size;
+    let invert_x = false;
+    let invert_y = false;
 
     // Process player movement
     let player_speed = 2;
@@ -84,8 +86,6 @@ class GameInstance extends EventEmitter{
     // Paddle hit detection
     let in_p1, in_p2;
     let player = this.players.p1;
-    let bfx = this.ball.x + this.ball.vx;
-    let bfy = this.ball.y + this.ball.vy;
 
     in_p1 = bfx < this.gamefield.paddle_offset;
     in_p1 = in_p1 && (bfy + this.ball.size) > player.y;
@@ -97,17 +97,20 @@ class GameInstance extends EventEmitter{
     in_p2 = in_p2 && bfy < (player.y + this.gamefield.paddle_height);
 
     if(in_p1 || in_p2) {
-      this.ball.vx *= -1;
+      invert_x = true;
     }
 
     // Wall Detection
-    if(fy + ball_size > this.gamefield.height || fy < 0) this.ball.vy *= -1;
-    if(fx + ball_size > this.gamefield.width || fx < 0) {
-      if(fx + ball_size > this.gamefield.width) this.players.p1.score++;
-      if(fx < 0) this.players.p2.score++;
+    if(bfy + ball_size > this.gamefield.height || bfy < 0) invert_y = true;
+    if(bfx + ball_size > this.gamefield.width || bfx < 0) {
+      if(bfx + ball_size > this.gamefield.width) this.players.p1.score++;
+      if(bfx < 0) this.players.p2.score++;
 
-      this.ball.vx *= -1;
+      invert_x = true;
     }
+
+    if(invert_x) this.ball.vx *= -1;
+    if(invert_y) this.ball.vy *= -1;
 
     // Process ball movement
     this.ball.x += this.ball.vx;

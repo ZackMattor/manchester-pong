@@ -16,8 +16,8 @@ var Controller = {
     // Deal with messages from the server
     this.game_connection.on_bind_status = this.on_bind_status.bind(this);
 
-    $('.control-button').on('mousedown', this.on_controller_button_press.bind(this));
-    $('.control-button').on('mouseup', this.on_controller_button_release.bind(this));
+    $('.control-button').on('mousedown touchstart', this.on_controller_button_press.bind(this));
+    $('.control-button').on('mouseup touchend', this.on_controller_button_release.bind(this));
 
 
     $('#connect-button').click(this.bind_attempt.bind(this));
