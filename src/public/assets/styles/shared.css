@@ -1,9 +1,31 @@
 * {
+  margin: 0px;
+  padding: 0px;
   box-sizing: border-box;
 }
 
 body {
-  margin: 0;
+  text-align: center;
+}
+
+body {
+  font-family: Muli;
+}
+
+body, h1, h2 {
+  font-weight: 300;
+}
+
+canvas {
+  border: 5px solid #000;
+}
+
+.title {
+  margin: 64px 0px 32px;
+}
+
+#token {
+  margin: 0px 0px 32px;
 }
 
 .state {

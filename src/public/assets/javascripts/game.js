@@ -4,7 +4,7 @@ $(() => {
   let game_connection = new GameConnection('game');
 
   game_connection.on_game_state = (data) => {
-    $('#join_token').html(data.current_join_token);
+    $('#token').html(data.current_join_token);
 
     const canvas = document.getElementById('field')
     const context = canvas.getContext('2d')
