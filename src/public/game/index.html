@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Manchester Pong | Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Muli:300" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/assets/styles/shared.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="/assets/javascripts/shared.js"></script>
@@ -8,23 +9,12 @@
   </head>
 
   <body>
-    <h1>Manchester Pong</h1>
+    <h1 class="title">Manchester Pong</h1>
 
-    <div id="gamefield">
-      <div class="entity" id="join_token"></div>
-      <div class="entity" id="p1"></div>
-      <div class="entity" id="p2"></div>
-      <div class="entity" id="ball"></div>
+    <h2 id="token">Fetching</h2>
 
-      <div class="entity left-label">
-        (<span id="p1-score"></span>)
-        <span id="p1-name"></span>
-      </div>
-
-      <div class="entity right-label">
-        (<span id="p2-score"></span>)
-        <span id="p2-name"></span>
-      </div>
-    </div>
+    <canvas id="field">
+      <p>Your browser doesn't support HTML5</p>
+    </canvas>
   </body>
 </html>

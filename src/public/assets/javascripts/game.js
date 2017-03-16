@@ -3,42 +3,28 @@ $(() => {
 
   let game_connection = new GameConnection('game');
 
-  game_connection.on_game_state = function(data) {
-    $('#join_token').html(data.current_join_token);
+  game_connection.on_game_state = (data) => {
+    $('#token').html(data.current_join_token);
 
-    $('#gamefield').css({
-      height: data.gamefield.height,
-      width: data.gamefield.width
-    });
+    const canvas = document.getElementById('field')
+    const context = canvas.getContext('2d')
 
-    let field_width = $('#gamefield').width();
-    let paddle_width = 5;
+    const fieldWidth = data.gamefield.width
 
-    $('#ball').css({
-      top: data.ball.y,
-      left: data.ball.x,
-      width: data.ball.size,
-      height: data.ball.size
-    });
+    canvas.width = fieldWidth
+    canvas.height = data.gamefield.height
 
-    $('#p1').css({
-      top: data.p1.y,
-      left: data.gamefield.paddle_offset - paddle_width,
-      width: paddle_width,
-      height: data.gamefield.paddle_height
-    });
+    const paddleWidth = 5
 
-    $('#p1-name').html(data.p1.name);
-    $('#p1-score').html(data.p1.score);
+    // Ball
+    context.arc(data.ball.x, data.ball.y, data.ball.size, 0, 2 * Math.PI)
 
-    $('#p2-name').html(data.p2.name);
-    $('#p2-score').html(data.p2.score);
+    // Player 1
+    context.rect(data.gamefield.paddle_offset - paddleWidth, data.p1.y, paddleWidth, data.gamefield.paddle_height)
 
-    $('#p2').css({
-      top: data.p2.y,
-      left: field_width - data.gamefield.paddle_offset,
-      width: paddle_width,
-      height: data.gamefield.paddle_height
-    });
+    // Player 2
+    context.rect(fieldWidth - data.gamefield.paddle_offset, data.p2.y, paddleWidth, data.gamefield.paddle_height)
+
+    context.fill()
   }
 });
