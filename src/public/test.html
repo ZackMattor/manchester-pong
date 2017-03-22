@@ -7,9 +7,18 @@
         text-align: center;
       }
 
-      .game {
-        width: 520px;
-        height: 390px;
+      .screen {
+        width: 1080px;
+        height: 1920px;
+        transform-origin: top left;
+        transform: scale(0.5);
+      }
+
+      .screen-wrap {
+        width: 540px;
+        height: 960px;
+        display: inline-block;
+        float: left;
       }
 
       .controller {
@@ -20,7 +29,10 @@
   </head>
 
   <body>
-    <iframe class="game" src="/game"></iframe><br>
+    <div class="screen-wrap">
+      <iframe class="screen" src="/game"></iframe>
+    </div>
+
     <iframe class="controller" src="/"></iframe>
     <iframe class="controller" src="/"></iframe>
   </body>
