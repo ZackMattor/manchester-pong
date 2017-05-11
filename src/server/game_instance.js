@@ -145,7 +145,7 @@ class GameInstance extends EventEmitter{
 
     this.players[`p${id}`].score++;
 
-    if(this.players[`p${id}`].score == 1) {
+    if(this.players[`p${id}`].score == 5) {
       this.players.p1.controller_instance.con.send('player_win', {id: id});
       this.players.p2.controller_instance.con.send('player_win', {id: id});
       this.con.send('player_win', {id: id});

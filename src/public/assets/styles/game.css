@@ -1,0 +1,30 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Muli;
+  font-size: 128px;
+}
+
+.state {
+  display: none;
+  text-align: center;
+}
+
+.title {
+  margin-top: 100px;
+}
+
+#token {
+  font-weight: 300;
+  margin-top: 700px;
+  font-size: 300px;
+  margin-top: 300px;
+}
+
+canvas {
+  border: 5px solid #000;
+}
