@@ -50,3 +50,9 @@ class GameConnection {
     return new_uri;
   }
 }
+
+let set_state = function(name) {
+  $('.state').hide();
+  $(`#state-${name}`).show();
+};
+

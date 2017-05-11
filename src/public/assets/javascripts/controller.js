@@ -1,8 +1,3 @@
-let set_state = function(name) {
-  $('.state').hide();
-  $(`#state-${name}`).show();
-};
-
 var Controller = {
   init() {
     console.log('Welcome to the controller');
@@ -16,6 +11,7 @@ var Controller = {
     // Deal with messages from the server
     this.game_connection.on_bind_status = this.on_bind_status.bind(this);
     this.game_connection.on_game_start = this.on_game_start.bind(this);
+    this.game_connection.on_player_win = this.player_win.bind(this);
 
     $('.control-button').on('mousedown touchstart', this.on_controller_button_press.bind(this));
     $('.control-button').on('mouseup touchend', this.on_controller_button_release.bind(this));
@@ -44,6 +40,11 @@ var Controller = {
 
   on_game_start(data) {
     set_state('controller');
+  },
+
+  player_win(data) {
+    $('span.player_id').html(data.id);
+    set_state('game-over');
   },
 
   on_controller_button_press(evt) {

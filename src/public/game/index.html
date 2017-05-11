@@ -9,12 +9,18 @@
   </head>
 
   <body>
-    <h1 class="title">Manchester Pong</h1>
+    <div class="state" id="state-idle">
+      <h2 id="token">Fetching</h2>
+    </div>
 
-    <h2 id="token">Fetching</h2>
+    <div class="state" id="state-game">
+      <canvas id="field">
+        <p>Your browser doesn't support HTML5</p>
+      </canvas>
+    </div>
 
-    <canvas id="field">
-      <p>Your browser doesn't support HTML5</p>
-    </canvas>
+    <div class="state" id="state-game-over">
+      Player <span class="player_id"></span> Won!
+    </div>
   </body>
 </html>

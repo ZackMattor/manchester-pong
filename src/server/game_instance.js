@@ -8,6 +8,11 @@ class GameInstance extends EventEmitter{
 
     this.active_tokens = ['foo'];
     this.con = con;
+
+    this.construct_field();
+  }
+
+  construct_field() {
     this.intervals = [];
 
     this.generate_token();
@@ -46,9 +51,18 @@ class GameInstance extends EventEmitter{
     this.ball_paused = false;
   }
 
+  reset() {
+    this._clear_intervals();
+    this.construct_field();
+  }
+
   game_start() {
     this.intervals.push(setInterval(this.send_game_state.bind(this), (1000 / 34)));
     this.intervals.push(setInterval(this.game_tick.bind(this), (1000 / 60)));
+
+    this.players.p1.controller_instance.con.send('game_start');
+    this.players.p2.controller_instance.con.send('game_start');
+    this.con.send('game_start');
 
     console.log('new game instance');
   }
@@ -131,10 +145,17 @@ class GameInstance extends EventEmitter{
 
     this.players[`p${id}`].score++;
 
-    this.ball_paused = true;
-    setTimeout(() => {
-      this.ball_paused = false;
-    }, 2000);
+    if(this.players[`p${id}`].score == 1) {
+      this.players.p1.controller_instance.con.send('player_win', {id: id});
+      this.players.p2.controller_instance.con.send('player_win', {id: id});
+      this.con.send('player_win', {id: id});
+      this.reset();
+    } else {
+      this.ball_paused = true;
+      setTimeout(() => {
+        this.ball_paused = false;
+      }, 2000);
+    }
   }
 
   send_token() {
@@ -206,9 +227,6 @@ class GameInstance extends EventEmitter{
 
     // If we are the last player needed...
     if(id == 2) {
-      this.players.p1.controller_instance.con.send('game_start');
-      this.players.p2.controller_instance.con.send('game_start');
-
       this.game_start();
     }
   }
@@ -221,9 +239,14 @@ class GameInstance extends EventEmitter{
   }
 
   shutdown_instance() {
-    this.intervals.forEach((interval) => clearInterval(interval));
+    this._clear_intervals();
 
     this.emit('close', this.con.id);
+  }
+
+  _clear_intervals() {
+    this.intervals.forEach((interval) => clearInterval(interval));
+    this.intervals = [];
   }
 }
 

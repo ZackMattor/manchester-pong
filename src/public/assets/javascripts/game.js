@@ -11,8 +11,21 @@ $(() => {
     console.log(`player ${data.id} joined`);
   };
 
+  game_connection.on_game_start = (data) => {
+    set_state('game');
+  };
+
   game_connection.on_player_left = (data) => {
     console.log(`player ${data.id} left`);
+  };
+
+  game_connection.on_player_win = (data) => {
+    $('span.player_id').html(data.id);
+    set_state('game-over');
+
+    setTimeout(() => {
+      set_state('idle');
+    }, 5000);
   };
 
   game_connection.on_game_state = (data) => {
@@ -34,5 +47,7 @@ $(() => {
     context.rect(data.p2.pos, data.gamefield.height - data.gamefield.paddle_offset, data.gamefield.paddle_size, paddleWidth);
 
     context.fill();
-  }
+  };
+
+  set_state('idle');
 });
