@@ -8,6 +8,10 @@ class GameInstance extends EventEmitter{
 
     this.active_tokens = ['foo'];
     this.con = con;
+    this.intervals = [];
+
+    this.generate_token();
+    this.intervals.push(setInterval(this.generate_token.bind(this), (1000 * 10)));
 
     this.players = {
       p1: {
@@ -39,12 +43,11 @@ class GameInstance extends EventEmitter{
       paddle_offset: 30
     };
 
-    this.intervals = [];
+  }
+
+  game_start() {
     this.intervals.push(setInterval(this.send_game_state.bind(this), (1000 / 34)));
     this.intervals.push(setInterval(this.game_tick.bind(this), (1000 / 60)));
-    this.intervals.push(setInterval(this.generate_token.bind(this), (1000 * 10)));
-
-    this.generate_token();
 
     console.log('new game instance');
   }
@@ -56,6 +59,8 @@ class GameInstance extends EventEmitter{
     if(this.active_tokens.length > 4) {
       this.active_tokens.pop();
     }
+
+    this.send_token();
   }
 
   game_tick() {
@@ -117,6 +122,14 @@ class GameInstance extends EventEmitter{
     this.ball.y += this.ball.vy;
   }
 
+  send_token() {
+    let current_token = this.active_tokens[0];
+
+    let data = { current_join_token: current_token };
+
+    this.con.send('token', data);
+  }
+
   send_game_state() {
     let p1 = this.players.p1;
     let p2 = this.players.p2;
@@ -152,25 +165,44 @@ class GameInstance extends EventEmitter{
   }
 
   join_game(controller_instance) {
+    console.log('player joinging');
     if(!this.players.p1.controller_instance) {
       controller_instance.on('close', () => {
-        this.players.p1.controller_instance = null;
-        this.players.p1.name = "Bot";
+        this.remove_player(1);
       });
 
-      this.players.p1.controller_instance = controller_instance;
-      this.players.p1.name = "Player 1";
+      this.add_player(1, controller_instance);
     } else if(!this.players.p2.controller_instance) {
       controller_instance.on('close', () => {
-        this.players.p2.controller_instance = null;
-        this.players.p2.name = "Bot";
+        this.remove_player(2);
       });
 
-      this.players.p2.controller_instance = controller_instance;
-      this.players.p2.name = "Player 2";
+      this.add_player(2, controller_instance);
     }
 
     console.log(this.players);
+  }
+
+  add_player(id, player) {
+    this.players[`p${id}`].controller_instance = player;
+    this.players[`p${id}`].name = `Player ${id}`;
+
+    this.con.send('player_join', {id: id});
+
+    // If we are the last player needed...
+    if(id == 2) {
+      this.players.p1.controller_instance.con.send('game_start');
+      this.players.p2.controller_instance.con.send('game_start');
+
+      this.game_start();
+    }
+  }
+
+  remove_player(id) {
+    this.players[`p${id}`].controller_instance = null;
+    this.players[`p${id}`].name = "Bot";
+
+    this.con.send('player_left', {id: id});
   }
 
   shutdown_instance() {

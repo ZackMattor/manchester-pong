@@ -15,13 +15,13 @@ var Controller = {
 
     // Deal with messages from the server
     this.game_connection.on_bind_status = this.on_bind_status.bind(this);
+    this.game_connection.on_game_start = this.on_game_start.bind(this);
 
     $('.control-button').on('mousedown touchstart', this.on_controller_button_press.bind(this));
     $('.control-button').on('mouseup touchend', this.on_controller_button_release.bind(this));
 
 
     $('#connect-button').click(this.bind_attempt.bind(this));
-
   },
 
   bind_attempt() {
@@ -38,8 +38,12 @@ var Controller = {
     if(!data.was_successful) {
       $('input[name="game-token"]').addClass('error');
     } else {
-      set_state('controller');
+      set_state('lobby');
     }
+  },
+
+  on_game_start(data) {
+    set_state('controller');
   },
 
   on_controller_button_press(evt) {
