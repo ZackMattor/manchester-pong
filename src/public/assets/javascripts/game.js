@@ -19,21 +19,21 @@ $(() => {
     const canvas = document.getElementById('field');
     const context = canvas.getContext('2d');
 
-    const fieldWidth = data.gamefield.width;
-
-    canvas.width = fieldWidth;
+    canvas.width = data.gamefield.width;
     canvas.height = data.gamefield.height;
 
-    const paddleWidth = 5;
+    const paddleWidth = 50;
 
     // Ball
     context.arc(data.ball.x, data.ball.y, data.ball.size, 0, 2 * Math.PI);
 
+    console.log(data.p1.pos);
+
     // Player 1
-    context.rect(data.gamefield.paddle_offset - paddleWidth, data.p1.y, paddleWidth, data.gamefield.paddle_height);
+    context.rect(data.p1.pos, data.gamefield.paddle_offset - paddleWidth, data.gamefield.paddle_size, paddleWidth);
 
     // Player 2
-    context.rect(fieldWidth - data.gamefield.paddle_offset, data.p2.y, paddleWidth, data.gamefield.paddle_height);
+    context.rect(data.p2.pos, data.gamefield.height - data.gamefield.paddle_offset, data.gamefield.paddle_size, paddleWidth);
 
     context.fill();
   }

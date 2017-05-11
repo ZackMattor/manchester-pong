@@ -13,15 +13,22 @@ class GameInstance extends EventEmitter{
     this.generate_token();
     this.intervals.push(setInterval(this.generate_token.bind(this), (1000 * 10)));
 
+    this.gamefield = {
+      width: 1070,
+      height: 1800,
+      paddle_size: 300,
+      paddle_offset: 30
+    };
+
     this.players = {
       p1: {
-        y: 100,
+        pos: 400,
         name: 'Bot',
         score: 0,
         controller_instance: null
       },
       p2: {
-        y: 50,
+        pos: 400,
         name: 'Bot',
         score: 0,
         controller_instance: null
@@ -29,20 +36,14 @@ class GameInstance extends EventEmitter{
     };
 
     this.ball = {
-      x: 50,
-      y: 50,
-      size: 15,
-      vx: 2,
-      vy: 2
+      x: this.gamefield.width / 2,
+      y: this.gamefield.height / 2,
+      size: 70,
+      vx: 10,
+      vy: 8
     };
 
-    this.gamefield = {
-      width: 500,
-      height: 300,
-      paddle_height: 50,
-      paddle_offset: 30
-    };
-
+    this.ball_paused = false;
   }
 
   game_start() {
@@ -71,7 +72,7 @@ class GameInstance extends EventEmitter{
     let invert_y = false;
 
     // Process player movement
-    let player_speed = 2;
+    let player_speed = 22;
 
     for(var key in this.players) {
       let player = this.players[key];
@@ -79,11 +80,11 @@ class GameInstance extends EventEmitter{
 
       if(player_instance) {
         if(player_instance.get_key_state('key_up')) {
-          if(player.y - player_speed > 0) player.y -= player_speed;
+          if(player.pos - player_speed > 0) player.pos -= player_speed;
         }
 
         if(player_instance.get_key_state('key_down')) {
-          if(player.y + player_speed + this.gamefield.paddle_height < this.gamefield.height) player.y += player_speed;
+          if(player.pos + player_speed + this.gamefield.paddle_size < this.gamefield.width) player.pos += player_speed;
         }
       }
     }
@@ -93,13 +94,13 @@ class GameInstance extends EventEmitter{
     let player = this.players.p1;
 
     in_p1 = bfx < this.gamefield.paddle_offset;
-    in_p1 = in_p1 && (bfy + this.ball.size) > player.y;
-    in_p1 = in_p1 && bfy < (player.y + this.gamefield.paddle_height);
+    in_p1 = in_p1 && (bfy + this.ball.size) > player.pos;
+    in_p1 = in_p1 && bfy < (player.pos + this.gamefield.paddle_size);
 
     player = this.players.p2;
     in_p2 = bfx > (this.gamefield.width - this.gamefield.paddle_offset - this.ball.size);
-    in_p2 = in_p2 && (bfy + this.ball.size) > player.y;
-    in_p2 = in_p2 && bfy < (player.y + this.gamefield.paddle_height);
+    in_p2 = in_p2 && (bfy + this.ball.size) > player.pos;
+    in_p2 = in_p2 && bfy < (player.pos + this.gamefield.paddle_size);
 
     if(in_p1 || in_p2) {
       invert_x = true;
@@ -108,8 +109,8 @@ class GameInstance extends EventEmitter{
     // Wall Detection
     if(bfy + ball_size > this.gamefield.height || bfy < 0) invert_y = true;
     if(bfx + ball_size > this.gamefield.width || bfx < 0) {
-      if(bfx + ball_size > this.gamefield.width) this.players.p1.score++;
-      if(bfx < 0) this.players.p2.score++;
+      if(bfx + ball_size > this.gamefield.width) this.player_scored(1);
+      if(bfx < 0) this.player_scored(2);
 
       invert_x = true;
     }
@@ -118,8 +119,22 @@ class GameInstance extends EventEmitter{
     if(invert_y) this.ball.vy *= -1;
 
     // Process ball movement
-    this.ball.x += this.ball.vx;
-    this.ball.y += this.ball.vy;
+    if(!this.ball_paused) {
+      this.ball.x += this.ball.vx;
+      this.ball.y += this.ball.vy;
+    }
+  }
+
+  player_scored(id) {
+    this.ball.x = this.gamefield.width / 2;
+    this.ball.y = this.gamefield.height / 2;
+
+    this.players[`p${id}`].score++;
+
+    this.ball_paused = true;
+    setTimeout(() => {
+      this.ball_paused = false;
+    }, 2000);
   }
 
   send_token() {
@@ -138,12 +153,12 @@ class GameInstance extends EventEmitter{
     let data = {
       current_join_token: current_token,
       p1: {
-        y: p1.y,
+        pos: p1.pos,
         score: p1.score,
         name: p1.name
       },
       p2: {
-        y: p2.y,
+        pos: p2.pos,
         score: p2.score,
         name: p2.name
       }
