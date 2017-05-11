@@ -27,8 +27,6 @@ $(() => {
     // Ball
     context.arc(data.ball.x, data.ball.y, data.ball.size, 0, 2 * Math.PI);
 
-    console.log(data.p1.pos);
-
     // Player 1
     context.rect(data.p1.pos, data.gamefield.paddle_offset - paddleWidth, data.gamefield.paddle_size, paddleWidth);
 

@@ -93,26 +93,26 @@ class GameInstance extends EventEmitter{
     let in_p1, in_p2;
     let player = this.players.p1;
 
-    in_p1 = bfx < this.gamefield.paddle_offset;
-    in_p1 = in_p1 && (bfy + this.ball.size) > player.pos;
-    in_p1 = in_p1 && bfy < (player.pos + this.gamefield.paddle_size);
+    in_p1 = bfy < this.gamefield.paddle_offset;
+    in_p1 = in_p1 && (bfx + this.ball.size) > player.pos;
+    in_p1 = in_p1 && bfx < (player.pos + this.gamefield.paddle_size);
 
     player = this.players.p2;
-    in_p2 = bfx > (this.gamefield.width - this.gamefield.paddle_offset - this.ball.size);
-    in_p2 = in_p2 && (bfy + this.ball.size) > player.pos;
-    in_p2 = in_p2 && bfy < (player.pos + this.gamefield.paddle_size);
+    in_p2 = bfy > (this.gamefield.height - this.gamefield.paddle_offset - this.ball.size);
+    in_p2 = in_p2 && (bfx + this.ball.size) > player.pos;
+    in_p2 = in_p2 && bfx < (player.pos + this.gamefield.paddle_size);
 
     if(in_p1 || in_p2) {
-      invert_x = true;
+      invert_y = true;
     }
 
     // Wall Detection
-    if(bfy + ball_size > this.gamefield.height || bfy < 0) invert_y = true;
-    if(bfx + ball_size > this.gamefield.width || bfx < 0) {
-      if(bfx + ball_size > this.gamefield.width) this.player_scored(1);
-      if(bfx < 0) this.player_scored(2);
+    if(bfx + ball_size > this.gamefield.width || bfx < 0) invert_x = true;
+    if(bfy + ball_size > this.gamefield.height || bfy < 0) {
+      if(bfy + ball_size > this.gamefield.height) this.player_scored(1);
+      if(bfy < 0) this.player_scored(2);
 
-      invert_x = true;
+      invert_y = true;
     }
 
     if(invert_x) this.ball.vx *= -1;
