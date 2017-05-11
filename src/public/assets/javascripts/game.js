@@ -25,7 +25,7 @@ $(() => {
 
     setTimeout(() => {
       set_state('idle');
-    }, 5000);
+    }, 10000);
   };
 
   game_connection.on_game_state = (data) => {

@@ -18,6 +18,10 @@ body {
   margin-top: 100px;
 }
 
+.score {
+  margin-top: 500px;
+}
+
 #token {
   font-weight: 300;
   margin-top: 700px;
