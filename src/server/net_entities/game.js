@@ -1,10 +1,10 @@
 const EventEmitter = require('events');
 
-class GameInstance extends EventEmitter{
+class Game extends EventEmitter{
   constructor(con) {
     super();
 
-    con.on('close', this.shutdown_instance.bind(this))
+    con.on('close', this.shutdown.bind(this))
 
     this.active_tokens = ['foo'];
     this.con = con;
@@ -64,7 +64,7 @@ class GameInstance extends EventEmitter{
     this.players.p2.controller.con.send('game_start');
     this.con.send('game_start');
 
-    console.log('new game instance');
+    console.log('new game');
   }
 
   generate_token() {
@@ -90,14 +90,14 @@ class GameInstance extends EventEmitter{
 
     for(var key in this.players) {
       let player = this.players[key];
-      let player_instance = player.controller;
+      let controller = player.controller;
 
-      if(player_instance) {
-        if(player_instance.get_key_state('key_up')) {
+      if(controller) {
+        if(controller.get_key_state('key_up')) {
           if(player.pos - player_speed > 0) player.pos -= player_speed;
         }
 
-        if(player_instance.get_key_state('key_down')) {
+        if(controller.get_key_state('key_down')) {
           if(player.pos + player_speed + this.gamefield.paddle_size < this.gamefield.width) player.pos += player_speed;
         }
       }
@@ -238,7 +238,7 @@ class GameInstance extends EventEmitter{
     this.con.send('player_left', {id: id});
   }
 
-  shutdown_instance() {
+  shutdown() {
     this._clear_intervals();
 
     this.emit('close', this.con.id);
@@ -250,4 +250,4 @@ class GameInstance extends EventEmitter{
   }
 }
 
-module.exports = GameInstance;
+module.exports = Game;

@@ -1,10 +1,10 @@
 const EventEmitter = require('events');
 
-class Player extends EventEmitter {
+class Controller extends EventEmitter {
   constructor(con) {
     super();
 
-    console.log('New Player Instance');
+    console.log('New Cntroller Instance');
 
     this.con = con;
     this.key_state = null;
@@ -34,7 +34,7 @@ class Player extends EventEmitter {
   }
 
   _bind_attempt(data) {
-    this.emit('bind_attempt', {token: data.token, instance: this});
+    this.emit('bind_attempt', {token: data.token, controller: this});
   }
 
 
@@ -43,4 +43,4 @@ class Player extends EventEmitter {
   }
 }
 
-module.exports = Player;
+module.exports = Controller;
