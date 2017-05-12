@@ -38,3 +38,4 @@ jspm_packages
 
 # os stuff
 .DS_Store
+.zenflow-log
