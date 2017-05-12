@@ -14,6 +14,10 @@ class Controller extends EventEmitter {
     con.on('key_state', this._new_key_state.bind(this))
   }
 
+  send(channel, data) {
+    this.con.send(channel, data);
+  }
+
   bind_status(bind_successful) {
     console.log(`Did we bind? - ${bind_successful}`);
     this.con.send('bind_status', {was_successful: bind_successful});

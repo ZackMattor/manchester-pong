@@ -60,8 +60,8 @@ class Game extends EventEmitter{
     this.intervals.push(setInterval(this.send_game_state.bind(this), (1000 / 34)));
     this.intervals.push(setInterval(this.game_tick.bind(this), (1000 / 60)));
 
-    this.players[0].controller.con.send('game_start');
-    this.players[1].controller.con.send('game_start');
+    this.players[0].controller.send('game_start');
+    this.players[1].controller.send('game_start');
     this.con.send('game_start');
 
     console.log('new game');
@@ -145,8 +145,8 @@ class Game extends EventEmitter{
     this.players[id].score++;
 
     if(this.players[id].score == 5) {
-      this.players[0].controller.con.send('player_win', {id: id});
-      this.players[1].controller.con.send('player_win', {id: id});
+      this.players[0].controller.send('player_win', {id: id});
+      this.players[1].controller.send('player_win', {id: id});
       this.con.send('player_win', {id: id});
       this.reset();
     } else {
