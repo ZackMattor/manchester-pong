@@ -25,20 +25,20 @@ class Game extends EventEmitter{
       paddle_offset: 30
     };
 
-    this.players = {
-      p1: {
+    this.players = [
+      {
         pos: 400,
         name: 'Bot',
         score: 0,
         controller: null
       },
-      p2: {
+      {
         pos: 400,
         name: 'Bot',
         score: 0,
         controller: null
       }
-    };
+    ];
 
     this.ball = {
       x: this.gamefield.width / 2,
@@ -56,12 +56,12 @@ class Game extends EventEmitter{
     this.construct_field();
   }
 
-  game_start() {
+  start() {
     this.intervals.push(setInterval(this.send_game_state.bind(this), (1000 / 34)));
     this.intervals.push(setInterval(this.game_tick.bind(this), (1000 / 60)));
 
-    this.players.p1.controller.con.send('game_start');
-    this.players.p2.controller.con.send('game_start');
+    this.players[0].controller.con.send('game_start');
+    this.players[1].controller.con.send('game_start');
     this.con.send('game_start');
 
     console.log('new game');
@@ -88,8 +88,7 @@ class Game extends EventEmitter{
     // Process player movement
     let player_speed = 22;
 
-    for(var key in this.players) {
-      let player = this.players[key];
+    this.players.forEach((player) => {
       let controller = player.controller;
 
       if(controller) {
@@ -101,17 +100,17 @@ class Game extends EventEmitter{
           if(player.pos + player_speed + this.gamefield.paddle_size < this.gamefield.width) player.pos += player_speed;
         }
       }
-    }
+    });
 
     // Paddle hit detection
     let in_p1, in_p2;
-    let player = this.players.p1;
+    let player = this.players[0];
 
     in_p1 = bfy < this.gamefield.paddle_offset;
     in_p1 = in_p1 && (bfx + this.ball.size) > player.pos;
     in_p1 = in_p1 && bfx < (player.pos + this.gamefield.paddle_size);
 
-    player = this.players.p2;
+    player = this.players[1];
     in_p2 = bfy > (this.gamefield.height - this.gamefield.paddle_offset - this.ball.size);
     in_p2 = in_p2 && (bfx + this.ball.size) > player.pos;
     in_p2 = in_p2 && bfx < (player.pos + this.gamefield.paddle_size);
@@ -123,8 +122,8 @@ class Game extends EventEmitter{
     // Wall Detection
     if(bfx + ball_size > this.gamefield.width || bfx < 0) invert_x = true;
     if(bfy + ball_size > this.gamefield.height || bfy < 0) {
-      if(bfy + ball_size > this.gamefield.height) this.player_scored(1);
-      if(bfy < 0) this.player_scored(2);
+      if(bfy + ball_size > this.gamefield.height) this.player_scored(0);
+      if(bfy < 0) this.player_scored(1);
 
       invert_y = true;
     }
@@ -143,11 +142,11 @@ class Game extends EventEmitter{
     this.ball.x = this.gamefield.width / 2;
     this.ball.y = this.gamefield.height / 2;
 
-    this.players[`p${id}`].score++;
+    this.players[id].score++;
 
-    if(this.players[`p${id}`].score == 5) {
-      this.players.p1.controller.con.send('player_win', {id: id});
-      this.players.p2.controller.con.send('player_win', {id: id});
+    if(this.players[id].score == 5) {
+      this.players[0].controller.con.send('player_win', {id: id});
+      this.players[1].controller.con.send('player_win', {id: id});
       this.con.send('player_win', {id: id});
       this.reset();
     } else {
@@ -167,8 +166,8 @@ class Game extends EventEmitter{
   }
 
   send_game_state() {
-    let p1 = this.players.p1;
-    let p2 = this.players.p2;
+    let p1 = this.players[0];
+    let p2 = this.players[1];
     let current_token = this.active_tokens[0];
 
     let data = {
@@ -197,43 +196,37 @@ class Game extends EventEmitter{
   }
 
   is_full() {
-    return (!!this.players.p1.controller && !!this.players.p2.controller);
+    return (!!this.players[0].controller && !!this.players[1].controller);
   }
 
   join_game(controller) {
     console.log('player joinging');
-    if(!this.players.p1.controller) {
+
+    let index = this.players.findIndex((player) => {
+      return !player.controller;
+    });
+
+    if(index == -1) return;
+
+    if(!this.players[index].controller) {
       controller.on('close', () => {
-        this.remove_player(1);
+        this.remove_player(index);
       });
 
-      this.add_player(1, controller);
-    } else if(!this.players.p2.controller) {
-      controller.on('close', () => {
-        this.remove_player(2);
-      });
+      this.players[index].controller = controller;
+      this.players[index].name = `Player ${index}`;
 
-      this.add_player(2, controller);
+      this.con.send('player_join', {id: index});
     }
 
-    console.log(this.players);
-  }
-
-  add_player(id, player) {
-    this.players[`p${id}`].controller = player;
-    this.players[`p${id}`].name = `Player ${id}`;
-
-    this.con.send('player_join', {id: id});
-
-    // If we are the last player needed...
-    if(id == 2) {
-      this.game_start();
+    if(this.is_full()) {
+      this.start();
     }
   }
 
   remove_player(id) {
-    this.players[`p${id}`].controller = null;
-    this.players[`p${id}`].name = "Bot";
+    this.players[id].controller = null;
+    this.players[id].name = "Bot";
 
     this.con.send('player_left', {id: id});
   }
