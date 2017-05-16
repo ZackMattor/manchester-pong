@@ -5,7 +5,7 @@
   "author": "Zack Mattor <zmattor@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "",
+    "dev": "./node_modules/.bin/webpack-dev-server",
     "build": ""
   },
   "dependencies": {
