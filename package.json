@@ -1,21 +1,31 @@
 {
-  "name": "manchester-pong",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "name": "MillyardPong",
+  "description": "Millyard Pong game",
+  "version": "1.0.0",
+  "author": "Zack Mattor <zmattor@gmail.com>",
+  "private": true,
   "scripts": {
-    "test": "npm test"
+    "dev": "./node_modules/.bin/webpack-dev-server",
+    "build": ""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+git@github.com:ZackMattor/manchester-pong.git"
-  },
-  "author": "Zack Mattor",
-  "license": "MIT",
-  "homepage": "https://github.com/ZackMattor/manchester-pong",
   "dependencies": {
     "express": "^4.14.0",
+    "vue": "^2.2.1",
+    "vue-router": "^2.5.3",
     "ws": "^1.1.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-preset-latest": "^6.0.0",
+    "cross-env": "^3.0.0",
+    "css-loader": "^0.25.0",
+    "file-loader": "^0.9.0",
+    "node-sass": "^4.5.0",
+    "sass-loader": "^5.0.1",
+    "vue-loader": "^11.1.4",
+    "vue-template-compiler": "^2.2.1",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^2.2.0"
+  }
 }

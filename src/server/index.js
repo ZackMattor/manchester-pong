@@ -3,12 +3,12 @@ const WebSocket = require('ws');
 const http = require('http');
 const ServerManager = require('./server/server_manager.js');
 
-const app = express()
+// const app = express()
 
-const server = http.createServer(app);
+const server = http.createServer(/* app */);
 const wss = new WebSocket.Server({ server });
 
-app.use(express.static('src/public'));
+//app.use(express.static('src/public'));
 
 let port = process.env.MANCHESTER_PONG_PORT || 3000;
 
