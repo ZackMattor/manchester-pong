@@ -45,8 +45,7 @@ class GameConnection {
       new_uri = "ws:";
     }
 
-    //new_uri += `//${loc.host}/${namespace}`;
-    new_uri += `//${loc.hostname}:3000/${namespace}`;
+    new_uri += `//${loc.host}/${namespace}`;
 
     return new_uri;
   }
