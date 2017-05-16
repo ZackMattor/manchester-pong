@@ -92,11 +92,11 @@ class Game extends EventEmitter{
       let controller = player.controller;
 
       if(controller) {
-        if(controller.get_key_state('key_up')) {
+        if(controller.get_key_state('left')) {
           if(player.pos - player_speed > 0) player.pos -= player_speed;
         }
 
-        if(controller.get_key_state('key_down')) {
+        if(controller.get_key_state('right')) {
           if(player.pos + player_speed + this.gamefield.paddle_size < this.gamefield.width) player.pos += player_speed;
         }
       }

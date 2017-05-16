@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "express": "^4.14.0",
-    "ws": "^1.1.1",
-    "vue": "^2.2.1"
+    "vue": "^2.2.1",
+    "vue-router": "^2.5.3",
+    "ws": "^1.1.1"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

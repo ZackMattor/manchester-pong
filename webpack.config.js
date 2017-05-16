@@ -3,7 +3,7 @@ var webpack = require('webpack')
 
 module.exports = {
   entry: {
-    controller: './src/assets/javascripts/controller.js',
+    controller: './src/mobile/index.js',
     game: './src/assets/javascripts/game.js',
     shared: './src/assets/javascripts/shared.js'
   },
