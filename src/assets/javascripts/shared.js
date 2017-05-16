@@ -45,13 +45,16 @@ class GameConnection {
       new_uri = "ws:";
     }
 
-    new_uri += `//${loc.host}/${namespace}`;
+    //new_uri += `//${loc.host}/${namespace}`;
+    new_uri += `//${loc.hostname}:3000/${namespace}`;
 
     return new_uri;
   }
 }
 
-let set_state = function(name) {
+window.GameConnection = GameConnection;
+
+window.set_state = function(name) {
   $('.state').hide();
   $(`#state-${name}`).show();
 };
