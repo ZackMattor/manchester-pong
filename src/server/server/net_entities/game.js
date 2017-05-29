@@ -108,7 +108,7 @@ class Game extends EventEmitter{
     let in_p1, in_p2;
     let player = this.players[0];
 
-    in_p1 = bfy < this.gamefield.paddle_offset;
+    in_p1 = bfy < (this.gamefield.paddle_offset + ball_radius);
     in_p1 = in_p1 && (bfx + ball_radius) > player.pos;
     in_p1 = in_p1 && bfx < (player.pos + this.gamefield.paddle_size);
 
