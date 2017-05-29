@@ -122,7 +122,7 @@ class Game extends EventEmitter{
     }
 
     // Wall Detection
-    if(bfx + ball_radius > this.gamefield.width || bfx < 0) invert_x = true;
+    if(bfx + ball_radius > this.gamefield.width || (bfx - ball_radius) < 0) invert_x = true;
     if(bfy + ball_radius > this.gamefield.height || bfy < 0) {
       if(bfy + ball_radius > this.gamefield.height) this.player_scored(0);
       if(bfy < 0) this.player_scored(1);
