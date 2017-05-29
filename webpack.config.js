@@ -48,7 +48,7 @@ module.exports = {
     }
   },
   devServer: {
-    proxy : [{path: '/game', target: 'ws://localhost:3000/game', ws: true}, {path: '/controller', target: 'ws://localhost:3000/controller', ws: true}],
+    proxy : [{path: '/game', target: 'ws://localhost:3000', ws: true}, {path: '/controller', target: 'ws://localhost:3000', ws: true}],
     historyApiFallback: true,
     noInfo: true
   },

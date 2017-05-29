@@ -162,6 +162,7 @@ class Game extends EventEmitter{
 
     let data = { current_join_token: current_token };
 
+    console.log('send token?');
     this.con.send('token', data);
   }
 
