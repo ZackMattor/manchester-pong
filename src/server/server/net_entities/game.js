@@ -43,7 +43,7 @@ class Game extends EventEmitter{
     this.ball = {
       x: this.gamefield.width / 2,
       y: this.gamefield.height / 2,
-      size: 70,
+      radius: 70,
       vx: 10,
       vy: 8
     };
@@ -81,7 +81,7 @@ class Game extends EventEmitter{
   game_tick() {
     let bfx = this.ball.x + this.ball.vx;
     let bfy = this.ball.y + this.ball.vy;
-    let ball_size = this.ball.size;
+    let ball_radius = this.ball.radius;
     let invert_x = false;
     let invert_y = false;
 
@@ -94,10 +94,12 @@ class Game extends EventEmitter{
       if(controller) {
         if(controller.get_key_state('left')) {
           if(player.pos - player_speed > 0) player.pos -= player_speed;
+          else player.pos = 0;
         }
 
         if(controller.get_key_state('right')) {
           if(player.pos + player_speed + this.gamefield.paddle_size < this.gamefield.width) player.pos += player_speed;
+          else player.pos = this.gamefield.width - this.gamefield.paddle_size;
         }
       }
     });
@@ -107,12 +109,12 @@ class Game extends EventEmitter{
     let player = this.players[0];
 
     in_p1 = bfy < this.gamefield.paddle_offset;
-    in_p1 = in_p1 && (bfx + this.ball.size) > player.pos;
+    in_p1 = in_p1 && (bfx + ball_radius) > player.pos;
     in_p1 = in_p1 && bfx < (player.pos + this.gamefield.paddle_size);
 
     player = this.players[1];
-    in_p2 = bfy > (this.gamefield.height - this.gamefield.paddle_offset - this.ball.size);
-    in_p2 = in_p2 && (bfx + this.ball.size) > player.pos;
+    in_p2 = bfy > (this.gamefield.height - this.gamefield.paddle_offset - ball_radius);
+    in_p2 = in_p2 && (bfx + ball_radius) > player.pos;
     in_p2 = in_p2 && bfx < (player.pos + this.gamefield.paddle_size);
 
     if(in_p1 || in_p2) {
@@ -120,9 +122,9 @@ class Game extends EventEmitter{
     }
 
     // Wall Detection
-    if(bfx + ball_size > this.gamefield.width || bfx < 0) invert_x = true;
-    if(bfy + ball_size > this.gamefield.height || bfy < 0) {
-      if(bfy + ball_size > this.gamefield.height) this.player_scored(0);
+    if(bfx + ball_radius > this.gamefield.width || bfx < 0) invert_x = true;
+    if(bfy + ball_radius > this.gamefield.height || bfy < 0) {
+      if(bfy + ball_radius > this.gamefield.height) this.player_scored(0);
       if(bfy < 0) this.player_scored(1);
 
       invert_y = true;

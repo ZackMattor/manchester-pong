@@ -3,6 +3,10 @@ $(() => {
 
   let game_connection = new GameConnection('game');
 
+  const canvas = document.getElementById('field');
+  const ctx = canvas.getContext('2d');
+  const paddleWidth = 50;
+
   game_connection.on_token = (data) => {
     $('#token').html(data.current_join_token);
   };
@@ -28,25 +32,30 @@ $(() => {
     }, 10000);
   };
 
+  let first = true;
   game_connection.on_game_state = (data) => {
-    const canvas = document.getElementById('field');
-    const context = canvas.getContext('2d');
+    if(first) {
+      canvas.width = data.gamefield.width;
+      canvas.height = data.gamefield.height;
+      first = !first;
+    }
 
-    canvas.width = data.gamefield.width;
-    canvas.height = data.gamefield.height;
-
-    const paddleWidth = 50;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Ball
-    context.arc(data.ball.x, data.ball.y, data.ball.size, 0, 2 * Math.PI);
+    ctx.beginPath();
+    ctx.arc(data.ball.x, data.ball.y, data.ball.radius, 0, 2 * Math.PI);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(data.ball.x, data.ball.y, 3, 0, 2 * Math.PI);
+    ctx.stroke();
 
     // Player 1
-    context.rect(data.p1.pos, data.gamefield.paddle_offset - paddleWidth, data.gamefield.paddle_size, paddleWidth);
+    ctx.fillRect(data.p1.pos, data.gamefield.paddle_offset - paddleWidth, data.gamefield.paddle_size, paddleWidth);
 
     // Player 2
-    context.rect(data.p2.pos, data.gamefield.height - data.gamefield.paddle_offset, data.gamefield.paddle_size, paddleWidth);
-
-    context.fill();
+    ctx.fillRect(data.p2.pos, data.gamefield.height - data.gamefield.paddle_offset, data.gamefield.paddle_size, paddleWidth);
   };
 
   set_state('idle');
