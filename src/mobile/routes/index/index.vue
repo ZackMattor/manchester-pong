@@ -49,7 +49,7 @@ export default {
           this.token = '';
         }, 1300);
       } else {
-        this.$store.id = 1;
+        this.$store.player_id = data.player_id;
         this.$router.push('/lobby');
       }
     }

@@ -1,8 +1,8 @@
 <template>
   <div id="index">
-    <h1>Loby</h1>
+    <h1>Welcome Player {{$store.player_id + 1}}!</h1>
 
-    <p>Waiting for player 2 to join</p>
+    <p>Waiting for another player to join...</p>
   </div>
 </template>
 
@@ -10,7 +10,6 @@
 export default {
   name: 'lobby',
   mounted() {
-    debugger;
     this.$game_connection.on_game_start = () => {
       this.$router.push('/game');
     }

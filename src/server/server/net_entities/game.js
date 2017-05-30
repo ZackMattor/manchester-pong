@@ -238,7 +238,9 @@ class Game extends EventEmitter{
     }
 
     if(this.is_full()) {
-      this.start();
+      setTimeout(() => {
+        this.start();
+      }, 500);
     }
 
     return player_id;
