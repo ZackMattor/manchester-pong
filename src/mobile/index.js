@@ -22,6 +22,7 @@ const router = new VueRouter({
 var Controller = {
   init() {
     Vue.prototype.$game_connection = new GameConnection('controller');
+    Vue.prototype.$store = {};
 
     const app = new Vue({
       router,

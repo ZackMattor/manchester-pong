@@ -212,29 +212,36 @@ class Game extends EventEmitter{
     return (!!this.players[0].controller && !!this.players[1].controller);
   }
 
-  join_game(controller) {
+  join_game(controller, token) {
     console.log('player joinging');
 
-    let index = this.players.findIndex((player) => {
+    // is this a valid token?
+    if(!this.is_token_valid(token)) return -1;
+
+    // find a open spot
+    let player_id = this.players.findIndex((player) => {
       return !player.controller;
     });
 
-    if(index == -1) return;
+    // is the game full?
+    if(player_id == -1) return -1;
 
-    if(!this.players[index].controller) {
+    if(!this.players[player_id].controller) {
       controller.on('close', () => {
-        this.remove_player(index);
+        this.remove_player(player_id);
       });
 
-      this.players[index].controller = controller;
-      this.players[index].name = `Player ${index}`;
+      this.players[player_id].controller = controller;
+      this.players[player_id].name = `Player ${player_id}`;
 
-      this.con.send('player_join', {id: index});
+      this.con.send('player_join', {id: player_id});
     }
 
     if(this.is_full()) {
       this.start();
     }
+
+    return player_id;
   }
 
   remove_player(id) {

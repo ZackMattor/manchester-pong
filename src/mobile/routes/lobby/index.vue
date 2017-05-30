@@ -10,6 +10,7 @@
 export default {
   name: 'lobby',
   mounted() {
+    debugger;
     this.$game_connection.on_game_start = () => {
       this.$router.push('/game');
     }

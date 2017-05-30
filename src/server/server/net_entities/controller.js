@@ -4,7 +4,7 @@ class Controller extends EventEmitter {
   constructor(con) {
     super();
 
-    console.log('New Cntroller Instance');
+    console.log('New Controller Instance');
 
     this.con = con;
     this.key_state = null;
@@ -18,9 +18,15 @@ class Controller extends EventEmitter {
     this.con.send(channel, data);
   }
 
-  bind_status(bind_successful) {
+  bind_status(player_id) {
+    let bind_successful = (player_id === 0 || player_id === 1);
+
     console.log(`Did we bind? - ${bind_successful}`);
-    this.con.send('bind_status', {was_successful: bind_successful});
+
+    this.con.send('bind_status', {
+      was_successful: bind_successful,
+      player_id: player_id
+    });
   }
 
   get_key_state(key_name) {

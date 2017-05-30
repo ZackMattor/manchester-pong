@@ -49,6 +49,7 @@ export default {
           this.token = '';
         }, 1300);
       } else {
+        this.$store.id = 1;
         this.$router.push('/lobby');
       }
     }

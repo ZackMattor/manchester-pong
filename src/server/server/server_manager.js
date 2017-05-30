@@ -42,30 +42,23 @@ class ServerManager {
     let token = bind_obj.token;
     let controller = bind_obj.controller;
     let success = false;
+    let player_id;
 
     console.log(`Controller trying to join a game with ${token}`);
 
     for(var id in this.connections) {
       let game = this.connections[id].entity
 
-      let can_join = (game.constructor.name == 'Game');
-          can_join = (can_join && game.is_token_valid(token));
-          can_join = (can_join && !game.is_full());
+      if(game.constructor.name !== 'Game') continue;
 
-      if(can_join) {
-        console.log('Controller paired with game');
-        controller.bind_status(true);
-        game.join_game(controller);
+      player_id = game.join_game(controller, token);
 
-        success = true;
-        break;
-      }
+      console.log(player_id);
+
+      if(player_id != -1) break;
     }
 
-    if(!success) {
-      console.log('failed to pair');
-      controller.bind_status(false);
-    }
+    controller.bind_status(player_id);
   }
 
   remove_connection(id) {
