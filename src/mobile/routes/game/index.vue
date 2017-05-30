@@ -60,5 +60,6 @@ export default {
     width: 40%;
     background-color: #ccc;
     padding: 20px;
+    cursor: pointer;
   }
 </style>

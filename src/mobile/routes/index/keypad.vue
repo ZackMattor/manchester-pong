@@ -1,7 +1,9 @@
 <template>
 <div class="wrap">
   <div class="keypad">
-    <span class="number" @click="clicked(n)" v-for="n in [1,2,3,4,5,6,7,8,9,0]">{{ n }}</span>
+    <div class="number" @click="clicked(n)" v-for="n in [1,2,3,4,5,6,7,8,9,0,'<']">
+      {{ n }}
+    </div>
   </div>
 </div>
 </template>
@@ -38,5 +40,6 @@ export default {
   .number {
     flex-grow: 1;
     width: 32%;
+    cursor: pointer;
   }
 </style>

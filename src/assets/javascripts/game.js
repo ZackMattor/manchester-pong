@@ -45,11 +45,8 @@ $(() => {
     // Ball
     ctx.beginPath();
     ctx.arc(data.ball.x, data.ball.y, data.ball.radius, 0, 2 * Math.PI);
-    ctx.stroke();
+    ctx.fill();
 
-    ctx.beginPath();
-    ctx.arc(data.ball.x, data.ball.y, 3, 0, 2 * Math.PI);
-    ctx.stroke();
 
     // Player 1
     ctx.fillRect(data.p1.pos, data.gamefield.paddle_offset - paddleWidth, data.gamefield.paddle_size, paddleWidth);

@@ -2,9 +2,11 @@
 
 <div id="index">
 <h1>Milyard Pong</h1>
-<div class="token">Token: {{ token }}</div>
-
-<br>
+<div class="token">
+  <span v-if="err" class="error">{{ err }}</span>
+  <span v-else-if="token">{{ token }}</span>
+  <span v-else class="placeholder">Enter Game Token...</span>
+</div>
 
 <keypad v-on:number="on_number"></keypad>
 </div>
@@ -23,22 +25,29 @@ export default {
 
   methods: {
     on_number(num) {
-      if(this.token.length !== 4) {
+      if(num == '<') {
+        this.token = this.token.slice(0,-1);
+      } else {
         this.token += num;
+      }
 
-        if(this.token.length === 4) {
-          let data = {
-            token: this.token
-          };
+      if(this.token.length === 4) {
+        let data = {
+          token: this.token
+        };
 
-          this.$game_connection.send('bind_attempt', data);
-        }
+        this.$game_connection.send('bind_attempt', data);
       }
     },
 
     on_bind_status(data) {
       if(!data.was_successful) {
-        this.token = "";
+        this.err = 'Invalid Token...';
+
+        setTimeout(() => {
+          this.err = '';
+          this.token = '';
+        }, 1300);
       } else {
         this.$router.push('/lobby');
       }
@@ -47,7 +56,8 @@ export default {
 
   data() {
     return {
-      token: ''
+      token: '',
+      err: ''
     };
   },
 
@@ -55,10 +65,28 @@ export default {
 }
 </script>
 
-
 <style lang="scss">
   .number {
     border: 1px solid black;
     padding: 20px;
+  }
+
+  .token {
+    text-align: center;
+    border: 1px solid black;
+    font-weight: bold;
+    width: 70%;
+    padding: 4px;
+    font-size: 20px;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+
+  .placeholder {
+    color: #666;
+  }
+
+  .error {
+    color: red;
   }
 </style>

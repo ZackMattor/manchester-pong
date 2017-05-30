@@ -1,4 +1,5 @@
 const EventEmitter = require('events');
+const Wall = require('../2d/wall.js');
 
 class Game extends EventEmitter{
   constructor(con) {
@@ -14,6 +15,12 @@ class Game extends EventEmitter{
 
   construct_field() {
     this.intervals = [];
+
+    this.walls = [];
+    this.walls << new Wall({x: 0, y: 0}, {x: 1080, y: 0});
+    this.walls << new Wall({x: 0, y: 1080}, {x: 1080, y: 1080});
+    this.walls << new Wall({x: 0, y: 0}, {x: 0, y: 1080});
+    this.walls << new Wall({x: 1080, y: 0}, {x: 1080, y: 1080});
 
     this.generate_token();
     this.intervals.push(setInterval(this.generate_token.bind(this), (1000 * 10)));
@@ -121,6 +128,10 @@ class Game extends EventEmitter{
       invert_y = true;
     }
 
+    //this.walls.forEach((wall) => {
+    //  let collision = wall.check_collision(this.ball, this.ball.radius);
+    //});
+
     // Wall Detection
     if(bfx + ball_radius > this.gamefield.width || (bfx - ball_radius) < 0) invert_x = true;
     if(bfy + ball_radius > this.gamefield.height || bfy < 0) {
@@ -164,7 +175,6 @@ class Game extends EventEmitter{
 
     let data = { current_join_token: current_token };
 
-    console.log('send token?');
     this.con.send('token', data);
   }
 
