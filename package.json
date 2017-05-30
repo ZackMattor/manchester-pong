@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server",
-    "build": ""
+    "build": "./bin/build.sh"
   },
   "dependencies": {
     "express": "^4.14.0",
