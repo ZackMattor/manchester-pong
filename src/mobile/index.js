@@ -1,10 +1,17 @@
+require('../shared/style.css');
+
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import GameConnection from '../shared/game_connection.js';
+import jquery from 'jquery';
 
 import IndexRoute from './routes/index/index.vue';
 import GameOverRoute from './routes/game-over/index.vue';
 import GameRoute from './routes/game/index.vue';
 import LobbyRoute from './routes/lobby/index.vue';
+
+window.$ = jquery;
+window.jQuery = jquery;
 
 Vue.use(VueRouter);
 
@@ -21,7 +28,7 @@ const router = new VueRouter({
 
 var Controller = {
   init() {
-    Vue.prototype.$game_connection = new GameConnection('controller');
+    Vue.prototype.$game_connection = new GameConnection('ws_controller');
     Vue.prototype.$store = {};
 
     const app = new Vue({

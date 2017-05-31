@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "express": "^4.14.0",
+    "jquery": "^3.2.1",
     "vue": "^2.2.1",
     "vue-router": "^2.5.3",
     "ws": "^1.1.1"
@@ -18,11 +19,13 @@
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",
     "babel-preset-latest": "^6.0.0",
+    "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
     "node-sass": "^4.5.0",
     "sass-loader": "^5.0.1",
+    "style-loader": "^0.18.1",
     "vue-loader": "^11.1.4",
     "vue-template-compiler": "^2.2.1",
     "webpack": "^2.2.0",

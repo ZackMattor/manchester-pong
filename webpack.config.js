@@ -1,15 +1,15 @@
 var path = require('path')
 var webpack = require('webpack')
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
     controller: './src/mobile/index.js',
-    game: './src/assets/javascripts/game.js',
-    shared: './src/assets/javascripts/shared.js'
+    game: './src/game/index.js'
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
+    path: path.resolve(__dirname, './dist/assets'),
+    //publicPath: '/dist/assets',
     filename: '[name].js'
   },
   module: {
@@ -19,13 +19,9 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           loaders: {
-            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
-            // the "scss" and "sass" values for the lang attribute to the right configs here.
-            // other preprocessors should work out of the box, no loader config like this necessary.
             'scss': 'vue-style-loader!css-loader!sass-loader',
             'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
           }
-          // other vue-loader options go here
         }
       },
       {
@@ -39,18 +35,31 @@ module.exports = {
         options: {
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
       }
     ]
   },
+  plugins: [
+    new CopyWebpackPlugin([
+      { from: 'src/mobile.html', to: '../index.html' },
+      { from: 'src/web_display.html', to: '../game/index.html' },
+      { from: 'src/web_display_test.html', to: '../test.html' },
+    ])
+  ],
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     }
   },
   devServer: {
-    proxy : [{path: '/game', target: 'ws://localhost:3000', ws: true}, {path: '/controller', target: 'ws://localhost:3000', ws: true}],
+    proxy : [{path: '/ws_game', target: 'ws://localhost:3000', ws: true}, {path: '/ws_controller', target: 'ws://localhost:3000', ws: true}],
     historyApiFallback: true,
-    noInfo: true
+    noInfo: true,
+    publicPath: 'dist',
+    contentBase: 'dist'
   },
   performance: {
     hints: false

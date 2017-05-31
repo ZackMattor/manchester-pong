@@ -23,10 +23,10 @@ class ServerManager {
 
     const namespace = url.parse(ws.upgradeReq.url, true).href;
     switch(namespace) {
-      case '/game':
+      case '/ws_game':
         entity = (new Game(con));
         break;
-      case '/controller':
+      case '/ws_controller':
         entity = (new Controller(con));
         entity.on('bind_attempt', this.bind_attempt.bind(this));
         break;

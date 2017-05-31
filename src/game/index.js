@@ -1,7 +1,19 @@
+require('../shared/style.css');
+require('./style.css');
+
+const GameConnection = require('../shared/game_connection.js');
+
+const $ = require('jquery');
+
+window.set_state = function(name) {
+  $('.state').hide();
+  $(`#state-${name}`).show();
+};
+
 $(() => {
   console.log('Welcome to the controller');
 
-  let game_connection = new GameConnection('game');
+  let game_connection = new GameConnection('ws_game');
 
   const canvas = document.getElementById('field');
   const ctx = canvas.getContext('2d');

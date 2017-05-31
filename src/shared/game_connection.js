@@ -51,10 +51,4 @@ class GameConnection {
   }
 }
 
-window.GameConnection = GameConnection;
-
-window.set_state = function(name) {
-  $('.state').hide();
-  $(`#state-${name}`).show();
-};
-
+module.exports = GameConnection;
