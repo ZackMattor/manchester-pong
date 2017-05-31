@@ -35,9 +35,16 @@ $(() => {
     console.log(`player ${data.id} left`);
   };
 
-  game_connection.on_player_win = (data) => {
-    $('span.player_id').html(data.id);
-    set_state('game-over');
+  game_connection.on_game_over = (data) => {
+    if(data.id) {
+      $('span.player_id').html(data.id);
+
+      set_state('game-over');
+    } else if(data.err) {
+      $('span.error').html(data.err);
+
+      set_state('error');
+    }
 
     setTimeout(() => {
       set_state('idle');

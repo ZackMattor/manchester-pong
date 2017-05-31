@@ -20,8 +20,13 @@
 export default {
   name: 'game',
   mounted() {
-    this.$game_connection.on_player_win = (data) => {
-      this.$router.push({path: 'game-over', query: { winner: data.id}});
+    this.$game_connection.on_game_over = (data) => {
+      if(data.err) {
+        alert(data.err);
+        location.reload();
+      } else {
+        this.$router.push({path: 'game-over', query: { winner: data.id}});
+      }
     };
   },
 

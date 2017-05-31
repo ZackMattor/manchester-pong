@@ -9,12 +9,14 @@ class Game extends EventEmitter{
 
     this.active_tokens = ['foo'];
     this.con = con;
+    this.game_running = false;
 
     this.construct_field();
   }
 
   construct_field() {
     this.intervals = [];
+    this.game_running = false;
 
     this.walls = [];
     this.walls << new Wall({x: 0, y: 0}, {x: 1080, y: 0});
@@ -64,11 +66,13 @@ class Game extends EventEmitter{
   }
 
   start() {
+    this.game_running = true;
+
     this.intervals.push(setInterval(this.send_game_state.bind(this), (1000 / 34)));
     this.intervals.push(setInterval(this.game_tick.bind(this), (1000 / 60)));
 
-    this.players[0].controller.send('game_start');
-    this.players[1].controller.send('game_start');
+    this.send_to(0, 'game_start');
+    this.send_to(1, 'game_start');
     this.con.send('game_start');
 
     console.log('new game');
@@ -158,9 +162,9 @@ class Game extends EventEmitter{
     this.players[id].score++;
 
     if(this.players[id].score == 5) {
-      this.players[0].controller.send('player_win', {id: id});
-      this.players[1].controller.send('player_win', {id: id});
-      this.con.send('player_win', {id: id});
+      this.send_to(0, 'game_over', {id: id});
+      this.send_to(1, 'game_over', {id: id});
+      this.con.send('game_over', {id: id});
       this.reset();
     } else {
       this.ball_paused = true;
@@ -201,6 +205,14 @@ class Game extends EventEmitter{
     data.gamefield = this.gamefield;
 
     this.con.send('game_state', data);
+  }
+
+  send_to(player_id, cmd, data) {
+    let player = this.players[player_id];
+
+    if(player.controller) {
+      player.controller.send(cmd, data);
+    }
   }
 
   is_token_valid(token) {
@@ -247,10 +259,20 @@ class Game extends EventEmitter{
   }
 
   remove_player(id) {
-    this.players[id].controller = null;
-    this.players[id].name = "Bot";
+    console.log('PLAYER LEFT!!');
+    let data = {err: `Player ${id+1} left!`}
 
-    this.con.send('player_left', {id: id});
+    if(this.game_running) {
+      console.log('GAME IS RUNNING');
+      this.send_to(0, 'game_over', data);
+      this.send_to(1, 'game_over', data);
+      this.con.send('game_over', data);
+
+      this.reset();
+    } else {
+      this.players[id].controller = null;
+      this.players[id].name = "Bot";
+    }
   }
 
   shutdown() {
