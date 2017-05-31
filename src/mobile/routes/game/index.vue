@@ -4,13 +4,13 @@
 
     <div v-on:mousedown="pressed('left')"
          v-on:mouseup="released('left')"
-         v-on:touchstart="released('left')"
+         v-on:touchstart="pressed('left')"
          v-on:touchend="released('left')"
          class="left">Left</div>
 
     <div v-on:mousedown="pressed('right')"
          v-on:mouseup="released('right')"
-         v-on:touchstart="released('right')"
+         v-on:touchstart="pressed('right')"
          v-on:touchend="released('right')"
          class="right">Right</div>
   </div>
