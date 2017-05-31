@@ -62,7 +62,7 @@ class ServerManager {
   }
 
   remove_connection(id) {
-    console.log(`Removing ${this.connections[id].entity.constructor.name} from the connections!`);
+    console.log(`Removing a connection from the connections!`);
 
     delete this.connections[id];
   }
