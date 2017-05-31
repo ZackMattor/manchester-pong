@@ -18,15 +18,18 @@ body {
   margin-top: 100px;
 }
 
+.domain {
+  margin-top: 300px;
+}
+
 .score {
   margin-top: 500px;
 }
 
 #token {
   font-weight: 300;
-  margin-top: 700px;
+  margin-top: 50px;
   font-size: 300px;
-  margin-top: 300px;
 }
 
 canvas {
