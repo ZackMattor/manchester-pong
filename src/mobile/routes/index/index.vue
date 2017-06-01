@@ -43,12 +43,14 @@ export default {
     on_bind_status(data) {
       if(!data.was_successful) {
         this.err = 'Invalid Token...';
+        this.$ga.event('bind_status', 'failed');
 
         setTimeout(() => {
           this.err = '';
           this.token = '';
         }, 1300);
       } else {
+        this.$ga.event('bind_status', 'success');
         this.$store.player_id = data.player_id;
         this.$router.push('/lobby');
       }

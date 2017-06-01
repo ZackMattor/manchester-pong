@@ -12,6 +12,12 @@
 export default {
   name: 'GameOver',
 
+  mounted() {
+    let player_won = (this.$store.player_id == this.$route.query.winner);
+
+    this.$ga.event('game_over', player_won ? 'win' : 'lost');
+  },
+
   methods: {
     reload() {
       location.reload();
