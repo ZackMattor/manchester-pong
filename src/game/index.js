@@ -23,10 +23,6 @@ $(() => {
   const center_line_height = 8;
   const center_line_gap = 10;
 
-  window.font_size = 30;
-  window.x = 30;
-  window.y = 30;
-
   game_connection.on_token = (data) => {
     $('#token').html(data.current_join_token);
   };
