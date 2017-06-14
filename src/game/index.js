@@ -19,9 +19,13 @@ $(() => {
   const ctx = canvas.getContext('2d');
   const paddleWidth = 15;
 
-  const center_line_width = 30;
+  const center_line_width = 35;
   const center_line_height = 8;
-  const center_line_gap = 8;
+  const center_line_gap = 10;
+
+  window.font_size = 30;
+  window.x = 30;
+  window.y = 30;
 
   game_connection.on_token = (data) => {
     $('#token').html(data.current_join_token);
@@ -71,9 +75,14 @@ $(() => {
     ctx.fillStyle = '#eee';
     ctx.strokeStyle = '#333';
 
-    for(let i=0; i<30; i++) {
+    for(let i=0; i<24; i++) {
       ctx.fillRect(i * center_line_width + center_line_gap * i, canvas.height/2, center_line_width, center_line_height);
     }
+
+    // Player Scores
+    ctx.font = `200px "Press Start 2P"`;
+    ctx.fillText(data.p1.score, 60, 900);
+    ctx.fillText(data.p2.score, 60, 1220);
 
     // Ball
     ctx.beginPath();
