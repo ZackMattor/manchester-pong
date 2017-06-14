@@ -166,7 +166,7 @@ class Game extends EventEmitter{
 
     this.players[id].score++;
 
-    if(this.players[id].score == 100) {
+    if(this.players[id].score == 5) {
       this.send_to(0, 'game_over', {id: id});
       this.send_to(1, 'game_over', {id: id});
       this.con.send('game_over', {id: id});

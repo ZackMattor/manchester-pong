@@ -80,9 +80,9 @@ $(() => {
     }
 
     // Player Scores
-    ctx.font = `200px "Press Start 2P"`;
+    ctx.font = `150px "Press Start 2P"`;
     ctx.fillText(data.p1.score, 60, 900);
-    ctx.fillText(data.p2.score, 60, 1220);
+    ctx.fillText(data.p2.score, 60, 1170);
 
     // Ball
     ctx.beginPath();
