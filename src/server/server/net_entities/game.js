@@ -29,9 +29,9 @@ class Game extends EventEmitter{
 
     this.gamefield = {
       width: 1070,
-      height: 1800,
+      height: 1900,
       paddle_size: 300,
-      paddle_offset: 30
+      paddle_offset: 50
     };
 
     this.players = [
@@ -52,7 +52,7 @@ class Game extends EventEmitter{
     this.ball = {
       x: this.gamefield.width / 2,
       y: this.gamefield.height / 2,
-      radius: 70,
+      radius: 40,
       vx: 10,
       vy: 8
     };
@@ -76,6 +76,11 @@ class Game extends EventEmitter{
     this.con.send('game_start');
 
     console.log('new game');
+
+    this.ball_paused = true;
+    setTimeout(() => {
+      this.ball_paused = false;
+    }, 3000);
   }
 
   generate_token() {
