@@ -7,6 +7,8 @@
 body {
   font-family: Muli;
   font-size: 128px;
+  background-color: #333;
+  color: #eee;
 }
 
 .state {
@@ -33,5 +35,6 @@ body {
 }
 
 canvas {
-  border: 5px solid #000;
+  border-left: 5px solid #eee;
+  border-right: 5px solid #eee;
 }
