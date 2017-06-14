@@ -7,6 +7,8 @@
 body {
   font-family: Muli;
   font-size: 128px;
+  background-color: #333;
+  color: #eee;
 }
 
 .state {
