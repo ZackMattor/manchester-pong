@@ -1,7 +1,7 @@
 <template>
 
 <div id="index">
-<h1>Milyard Pong</h1>
+<h1>Millyard Pong</h1>
 <div class="token">
   <span v-if="err" class="error">{{ err }}</span>
   <span v-else-if="token">{{ token }}</span>
