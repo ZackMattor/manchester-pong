@@ -1,6 +1,6 @@
 <template>
   <div id="game">
-    <h1>Loby</h1>
+    <h1>Lobby</h1>
 
     <div v-on:mousedown="pressed('left')"
          v-on:mouseup="released('left')"
