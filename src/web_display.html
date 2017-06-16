@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Manchester Pong | Game</title>
-    <link href="https://fonts.googleapis.com/css?family=Muli:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <script src="/assets/game.js"></script>
     <script>
@@ -18,8 +18,16 @@
   <body>
     <div class="state" id="state-idle">
       <div class="title">Play Pong</div>
-      <div class="domain">mhtpong.com</div>
-      <div id="token">Fetching</div>
+      <div class="step">
+        <div class="num">1</div>
+        Navigate to <br><span class="callout">mhtpong.com</span>
+      </div>
+      <div class="step">
+      <div class="num">2</div>
+        Enter the game code
+        <br><hr>
+        <span class="callout larger" id="token">Fetching...</span>
+      </div>
     </div>
 
     <div class="state" id="state-game">
