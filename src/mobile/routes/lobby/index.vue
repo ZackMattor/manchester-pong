@@ -18,13 +18,4 @@ export default {
 </script>
 
 <style lang="scss">
-  .content {
-    background-color: #ccc;
-    width: 80%;
-    margin: 30px auto;
-    color: #333;
-    font-size: 20px;
-    font-weight: 700;
-    padding: 17px;
-  }
 </style>

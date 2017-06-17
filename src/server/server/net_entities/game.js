@@ -177,6 +177,7 @@ class Game extends EventEmitter{
     this.players[id].score++;
 
     if(this.players[id].score == this.winning_score) {
+      console.log(`GAME OVER player ${id+1} won!!!`);
       this.send_to(0, 'game_over', {id: id});
       this.send_to(1, 'game_over', {id: id});
       this.con.send('game_over', {id: id});
@@ -278,7 +279,6 @@ class Game extends EventEmitter{
     let data = {err: `Player ${id+1} left!`}
 
     if(this.game_running) {
-      console.log('GAME IS RUNNING');
       this.send_to(0, 'game_over', data);
       this.send_to(1, 'game_over', data);
       this.con.send('game_over', data);

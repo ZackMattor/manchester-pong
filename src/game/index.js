@@ -40,8 +40,8 @@ $(() => {
   };
 
   game_connection.on_game_over = (data) => {
-    if(data.id) {
-      $('span.player_id').html(data.id);
+    if(typeof data.id === 'number') {
+      $('span.player_id').html(data.id + 1);
 
       set_state('game-over');
     } else if(data.err) {

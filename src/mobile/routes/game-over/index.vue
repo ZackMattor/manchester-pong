@@ -2,9 +2,11 @@
   <div id="game-over">
     <h1>Game Over!</h1>
 
-    <p>{{ $store.player_id == $route.query.winner ? "You Win!" : 'You lost!' }}</p>
+    <div class="content">
+      <p class="larger">{{ $store.player_id == $route.query.winner ? "You Win!" : 'You lost!' }}</p>
 
-    <div @click="reload" class="btn">Play Again!</div>
+      <div @click="reload" class="btn">Play Again!</div>
+    </div>
   </div>
 </template>
 
