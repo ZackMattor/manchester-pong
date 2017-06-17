@@ -30,7 +30,7 @@ body {
   font-size: 70px;
   padding: 58px;
   width: 880px;
-  margin: 160px auto;
+  margin: 120px auto;
   position: relative;
 }
 
@@ -57,8 +57,8 @@ canvas {
 }
 
 hr {
-  background-color: #333;
   margin: 49px;
+  border: 1px solid rgb(156, 156, 156);
 }
 
 .larger {
