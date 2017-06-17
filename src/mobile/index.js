@@ -27,10 +27,25 @@ const router = new VueRouter({
 
 
 Vue.use(VueRouter);
-Vue.use(VueAnalytics, {
-  id: 'UA-100333942-1',
-  router
-});
+
+if(window.location.origin === "http://mhtpong.com") {
+  Vue.use(VueAnalytics, {
+    id: 'UA-100333942-1',
+    router
+  });
+} else {
+  // Mock vue analytics
+
+  Vue.use({
+    install(Vue, opts) {
+      Vue.prototype.$ga = Vue.$ga = {
+        event(name, val) {
+          console.log(` Mock GA Event -> ${name} - ${val}`)
+        }
+      }
+    }
+  });
+}
 
 var Controller = {
   init() {
