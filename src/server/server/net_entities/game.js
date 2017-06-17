@@ -7,6 +7,7 @@ class Game extends EventEmitter{
 
     con.on('close', this.shutdown.bind(this))
 
+    this.winning_score = 5;
     this.active_tokens = ['foo'];
     this.con = con;
     this.game_running = false;
@@ -18,18 +19,18 @@ class Game extends EventEmitter{
     this.intervals = [];
     this.game_running = false;
 
-    this.walls = [];
-    this.walls << new Wall({x: 0, y: 0}, {x: 1080, y: 0});
-    this.walls << new Wall({x: 0, y: 1080}, {x: 1080, y: 1080});
-    this.walls << new Wall({x: 0, y: 0}, {x: 0, y: 1080});
-    this.walls << new Wall({x: 1080, y: 0}, {x: 1080, y: 1080});
+    //this.walls = [];
+    //this.walls << new Wall({x: 0, y: 0}, {x: 1080, y: 0});
+    //this.walls << new Wall({x: 0, y: 1080}, {x: 1080, y: 1080});
+    //this.walls << new Wall({x: 0, y: 0}, {x: 0, y: 1080});
+    //this.walls << new Wall({x: 1080, y: 0}, {x: 1080, y: 1080});
 
     this.generate_token();
     this.intervals.push(setInterval(this.generate_token.bind(this), (1000 * 60)));
 
     this.gamefield = {
-      width: 1070,
-      height: 1900,
+      width: 1080,
+      height: 1920,
       paddle_size: 300,
       paddle_offset: 50
     };
@@ -122,14 +123,20 @@ class Game extends EventEmitter{
 
     // Paddle hit detection
     let in_p1, in_p2;
+
     let player = this.players[0];
+    let distance_to_paddle = (bfy - ball_radius) - this.gamefield.paddle_offset;
 
     in_p1 = bfy < (this.gamefield.paddle_offset + ball_radius);
+    in_p1 = in_p1 && distance_to_paddle > -Math.abs(this.ball.vx);
     in_p1 = in_p1 && (bfx + ball_radius) > player.pos;
     in_p1 = in_p1 && bfx < (player.pos + this.gamefield.paddle_size);
 
     player = this.players[1];
+    distance_to_paddle = -((bfy + ball_radius) - (this.gamefield.height - this.gamefield.paddle_offset));
+
     in_p2 = bfy > (this.gamefield.height - this.gamefield.paddle_offset - ball_radius);
+    in_p2 = in_p2 && distance_to_paddle > -Math.abs(this.ball.vx);
     in_p2 = in_p2 && (bfx + ball_radius) > player.pos;
     in_p2 = in_p2 && bfx < (player.pos + this.gamefield.paddle_size);
 
@@ -142,10 +149,13 @@ class Game extends EventEmitter{
     //});
 
     // Wall Detection
+    let top_wall = -(ball_radius * 2);
+    let bottom_wall = this.gamefield.height + (ball_radius * 2);
+
     if(bfx + ball_radius > this.gamefield.width || (bfx - ball_radius) < 0) invert_x = true;
-    if(bfy + ball_radius > this.gamefield.height || bfy < 0) {
+    if(bfy + ball_radius > bottom_wall || bfy < top_wall) {
       if(bfy + ball_radius > this.gamefield.height) this.player_scored(0);
-      if(bfy < 0) this.player_scored(1);
+      if(bfy < top_wall) this.player_scored(1);
 
       invert_y = true;
     }
@@ -166,7 +176,7 @@ class Game extends EventEmitter{
 
     this.players[id].score++;
 
-    if(this.players[id].score == 5) {
+    if(this.players[id].score == this.winning_score) {
       this.send_to(0, 'game_over', {id: id});
       this.send_to(1, 'game_over', {id: id});
       this.con.send('game_over', {id: id});
