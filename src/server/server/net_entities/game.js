@@ -25,7 +25,7 @@ class Game extends EventEmitter{
     this.walls << new Wall({x: 1080, y: 0}, {x: 1080, y: 1080});
 
     this.generate_token();
-    this.intervals.push(setInterval(this.generate_token.bind(this), (1000 * 10)));
+    this.intervals.push(setInterval(this.generate_token.bind(this), (1000 * 60)));
 
     this.gamefield = {
       width: 1070,
