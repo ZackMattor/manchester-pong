@@ -34,6 +34,8 @@ Vue.use(VueAnalytics, {
 
 var Controller = {
   init() {
+    this.disable_zoom();
+
     Vue.prototype.$game_connection = new GameConnection('ws_controller');
     Vue.prototype.$store = {};
 
@@ -45,6 +47,21 @@ var Controller = {
     router.replace('/')
 
     console.log('Welcome to the controller');
+  },
+
+  disable_zoom() {
+    document.addEventListener('touchmove', function (event) {
+      if (event.scale !== 1) { event.preventDefault(); }
+    }, false);
+
+    var lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+      var now = (new Date()).getTime();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
   }
 };
 
