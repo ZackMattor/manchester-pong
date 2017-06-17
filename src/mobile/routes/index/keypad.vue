@@ -15,11 +15,6 @@ export default {
     clicked(n) {
       this.$emit('number', n);
     }
-  },
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    };
   }
 }
 </script>
@@ -35,11 +30,17 @@ export default {
     display: flex;
     flex-wrap: wrap;
     width: 70%;
+    background-color: #ccc;
+    color: #333;
+    font-size: 31px;
+    font-weight: 700;
   }
 
   .number {
     flex-grow: 1;
     width: 32%;
     cursor: pointer;
+    padding: 10px;
+    border: 1px solid #333;
   }
 </style>

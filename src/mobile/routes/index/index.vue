@@ -1,16 +1,14 @@
 <template>
-
 <div id="index">
-<h1>Millyard Pong</h1>
-<div class="token">
-  <span v-if="err" class="error">{{ err }}</span>
-  <span v-else-if="token">{{ token }}</span>
-  <span v-else class="placeholder">Enter Game Token...</span>
-</div>
+  <h1>Millyard Pong</h1>
+  <div class="token">
+    <span v-if="err" class="error">{{ err }}</span>
+    <span v-else-if="token">{{ token }}</span>
+    <span v-else class="placeholder">Enter Game Token...</span>
+  </div>
 
-<keypad v-on:number="on_number"></keypad>
+  <keypad v-on:number="on_number"></keypad>
 </div>
-
 </template>
 
 <script>
@@ -69,9 +67,13 @@ export default {
 </script>
 
 <style lang="scss">
-  .number {
-    border: 1px solid black;
-    padding: 20px;
+  body {
+    background-color: #333;
+    color: #eee;
+  }
+
+  h1 {
+    margin-top: 10px;
   }
 
   .token {
@@ -79,10 +81,12 @@ export default {
     border: 1px solid black;
     font-weight: bold;
     width: 70%;
-    padding: 4px;
-    font-size: 20px;
+    padding: 9px;
+    font-size: 18px;
     margin: 0 auto;
     margin-top: 20px;
+    color: #333;
+    background-color: #ccc;
   }
 
   .placeholder {
