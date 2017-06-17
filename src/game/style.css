@@ -28,9 +28,9 @@ body {
   background-color: #ccc;
   color: #333;
   font-size: 70px;
-  padding: 58px;
+  padding: 40px;
   width: 880px;
-  margin: 120px auto;
+  margin: 105px auto;
   position: relative;
 }
 
@@ -57,10 +57,10 @@ canvas {
 }
 
 hr {
-  margin: 49px;
+  margin: 30px 50px;
   border: 1px solid rgb(156, 156, 156);
 }
 
 .larger {
-  font-size: 150px;
+  font-size: 120px;
 }
