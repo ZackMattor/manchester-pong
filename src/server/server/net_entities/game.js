@@ -31,7 +31,7 @@ class Game extends EventEmitter{
     this.gamefield = {
       width: 1080,
       height: 1920,
-      paddle_size: 300,
+      paddle_size: 230,
       paddle_offset: 50
     };
 
@@ -53,7 +53,7 @@ class Game extends EventEmitter{
     this.ball = {
       x: this.gamefield.width / 2,
       y: this.gamefield.height / 2,
-      radius: 40,
+      radius: 35,
       vx: 10,
       vy: 8
     };

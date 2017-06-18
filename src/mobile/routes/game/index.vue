@@ -1,18 +1,17 @@
 <template>
   <div id="game">
-    <h1>Lobby</h1>
-
     <div v-on:mousedown="pressed('left')"
          v-on:mouseup="released('left')"
          v-on:touchstart="pressed('left')"
          v-on:touchend="released('left')"
-         class="left">Left</div>
+         class="left"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
 
     <div v-on:mousedown="pressed('right')"
          v-on:mouseup="released('right')"
          v-on:touchstart="pressed('right')"
          v-on:touchend="released('right')"
-         class="right">Right</div>
+         class="right"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+    
   </div>
 </template>
 
@@ -60,10 +59,26 @@ export default {
 
 
 <style lang="scss">
+  #game {
+    display: flex;
+  }
+
+  .left {
+    border-right: 2px solid #333;
+  }
+
   .left, .right {
-    display: inline-block;
-    width: 40%;
+    flex-grow: 1;
+    color: black;
+    font-size: 90px;
     background-color: #ccc;
-    padding: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+
+    &:active {
+      background-color: #aaa;
+    }
   }
 </style>
