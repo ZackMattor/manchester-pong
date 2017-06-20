@@ -1,9 +1,10 @@
 class GameConnection {
   constructor(namespace) {
-    console.log(namespace);
-    console.log(this._socket_url(namespace));
-    this.ws = new WebSocket(this._socket_url(namespace));
+    this.namespace = namespace;
+
+    this.ws = new WebSocket(this._socket_url());
     this.ws.onmessage = this.on_message.bind(this);
+    this.ws.onclose = () => this.wait_for_server();
   }
 
   on_message(message) {
@@ -16,15 +17,27 @@ class GameConnection {
         this.send('pong');
         break;
       default:
-        let func = this[`on_${route}`];
-
-        if(func) {
-          func(data);
-        } else {
-          console.log(`No handler set for the "${route}" packet type`);
-        }
+        this._call_callback(route, data);
         break;
     }
+  }
+
+  wait_for_server(time) {
+    let ws = new WebSocket(this._socket_url());
+
+    ws.onerror = () => {
+      time = this._next_time(time);
+
+      console.log(`server is still down... waiting ${time}ms till we try again`);
+      this._call_callback('disconnect', {waiting: time});
+
+      setTimeout(() => {
+        this.wait_for_server(time);
+      }, time);
+    };
+
+    // once we can reconnect.. just reload for now.
+    ws.onopen = () => { location.reload(); };
   }
 
   send(route, data) {
@@ -35,7 +48,26 @@ class GameConnection {
     this.ws.send(JSON.stringify(packet));
   }
 
-  _socket_url(namespace) {
+  _call_callback(name, data) {
+    let func = this[`on_${name}`];
+
+    if(func) {
+      func(data);
+    } else {
+      console.log(`No handler set for the "${name}" packet/event type`);
+    }
+  }
+
+  _next_time(current_time) {
+    let max_time = 3000;
+    let interval = 200;
+
+    if(!current_time) return interval;
+    else if(current_time >= max_time) return max_time;
+    else return current_time + interval;
+  }
+
+  _socket_url() {
     let loc = window.location
     let new_uri;
 
@@ -45,7 +77,7 @@ class GameConnection {
       new_uri = "ws:";
     }
 
-    new_uri += `//${loc.host}/${namespace}`;
+    new_uri += `//${loc.host}/${this.namespace}`;
 
     return new_uri;
   }

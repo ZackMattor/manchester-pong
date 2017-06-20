@@ -23,6 +23,13 @@ $(() => {
   const center_line_height = 8;
   const center_line_gap = 10;
 
+  game_connection.on_disconnect = (data) => {
+    let $alert = $('.alert.error');
+
+    $alert.html(`Uh Oh! Server semes to be down, retrying... <span class="fa fa-cog fa-spin"></span>`);
+    $alert.show();
+  };
+
   game_connection.on_token = (data) => {
     $('#token').html(data.current_join_token);
   };
