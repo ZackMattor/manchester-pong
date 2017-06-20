@@ -36,6 +36,7 @@ class GameConnection {
       }, time);
     };
 
+    // once we can reconnect.. just reload for now.
     ws.onopen = () => { location.reload(); };
   }
 

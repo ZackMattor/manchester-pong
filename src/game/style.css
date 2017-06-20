@@ -59,3 +59,26 @@ hr {
 .larger {
   font-size: 120px;
 }
+
+.alert-box {
+  position: absolute;
+  width: 100%;
+  top: 60px;
+}
+
+.alert {
+  width: 80%;
+  background-color: #ccc;
+  font-size: 30px;
+  border-radius: 10px;
+  color: #333;
+  margin: 0 auto;
+  padding: 30px;
+  display: none;
+}
+
+.alert.error {
+  background-color: #f2dede;
+  border-color: #ebcccc;
+  color: #a94442;
+}
