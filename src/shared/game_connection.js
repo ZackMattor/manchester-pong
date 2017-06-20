@@ -17,13 +17,7 @@ class GameConnection {
         this.send('pong');
         break;
       default:
-        let func = this[`on_${route}`];
-
-        if(func) {
-          func(data);
-        } else {
-          console.log(`No handler set for the "${route}" packet type`);
-        }
+        this._call_callback(route, data);
         break;
     }
   }
@@ -35,6 +29,7 @@ class GameConnection {
       time = this._next_time(time);
 
       console.log(`server is still down... waiting ${time}ms till we try again`);
+      this._call_callback('disconnect', {waiting: time});
 
       setTimeout(() => {
         this.wait_for_server(time);
@@ -50,6 +45,16 @@ class GameConnection {
       data: data || null
     };
     this.ws.send(JSON.stringify(packet));
+  }
+
+  _call_callback(name, data) {
+    let func = this[`on_${name}`];
+
+    if(func) {
+      func(data);
+    } else {
+      console.log(`No handler set for the "${name}" packet/event type`);
+    }
   }
 
   _next_time(current_time) {
