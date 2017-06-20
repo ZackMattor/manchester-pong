@@ -35,7 +35,6 @@ if(window.location.origin === "http://mhtpong.com") {
   });
 } else {
   // Mock vue analytics
-
   Vue.use({
     install(Vue, opts) {
       Vue.prototype.$ga = Vue.$ga = {
@@ -54,10 +53,9 @@ var Controller = {
     Vue.prototype.$game_connection = new GameConnection('ws_controller');
     Vue.prototype.$store = {};
 
-    const app = new Vue({
-      router,
-      template: '<router-view></router-view>'}
-    ).$mount('#app');
+    let index_component = require('./root.vue');
+
+    const app = new Vue(Object.assign(index_component, {router: router})).$mount('#app');
 
     router.replace('/')
 
