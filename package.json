@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server",
+    "test": "echo \"No tests yet!\" && exit 0",
     "build": "./bin/build.sh"
   },
   "dependencies": {
