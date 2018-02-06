@@ -42,5 +42,5 @@ jobs:
               docker build -t zackmattor/manchester-pong-backend:latest -f DockerfileBackend .
               docker tag zackmattor/manchester-pong-backend:latest zackmattor/manchester-pong-backend:$CIRCLE_SHA1
               docker push zackmattor/manchester-pong-backend:latest
-              docker push zackmattor/manchester-pong-backend:$CIRCLE_BRANCH
+              docker push zackmattor/manchester-pong-backend:$CIRCLE_SHA1
             fi
