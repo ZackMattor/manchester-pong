@@ -69,7 +69,7 @@ class GameConnection {
 
   _socket_url() {
     let loc = window.location;
-    let port = 8088;
+    let port = null;
     let new_uri;
 
     if (loc.protocol === "https:") {
@@ -78,7 +78,8 @@ class GameConnection {
       new_uri = "ws:";
     }
 
-    new_uri += `//${loc.hostname}:${port}/${this.namespace}`;
+    let port_section = port ? `:${port}` : '';
+    new_uri += `//${loc.hostname}${port_section}/${this.namespace}`;
 
     return new_uri;
   }
