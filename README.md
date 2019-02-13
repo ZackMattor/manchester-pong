@@ -5,9 +5,11 @@ It was originaly started to celibrate the life of [Ralph H. Baer](https://en.wik
 
 The Idea for this version of Pong was for people walking down the streets of manchester to jump in and play a game of Pong with a friend. We wanted to put a large screen in a window and allow people able to walk by and use their phones to connect to the game and start playing.
 
+Go [HERE](https://pong.zackmattor.com/test.html) to try out the test / framed version (easier to try because you don't need two mobile phones)
+
+Go [HERE](https://pong.zackmattor.com) to try try out the full version! NOTE - It's build for a 1080 screen flipped on it's side so you might need to zoom out to see the whole screen.
+
 ![alt text](https://i.imgur.com/Ykx4YOt.gif)
-
-
 
 
 # Technical Stuff
