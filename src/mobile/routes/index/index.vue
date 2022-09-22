@@ -15,6 +15,7 @@
 import Keypad from './keypad.vue';
 
 export default {
+  inject: ['$game_connection', '$store'],
   name: 'index',
 
   mounted() {

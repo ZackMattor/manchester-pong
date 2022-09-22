@@ -1,8 +1,10 @@
 var path = require('path')
 var webpack = require('webpack')
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader')
 
 module.exports = {
+  mode: 'development',
   entry: {
     controller: './src/mobile/index.js',
     game: './src/game/index.js'
@@ -17,17 +19,16 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: {
-          loaders: {
-            'scss': 'vue-style-loader!css-loader!sass-loader',
-            'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
-          }
-        }
+        //options: {
+        //  loaders: {
+        //    'scss': 'vue-style-loader!css-loader!sass-loader',
+        //    'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+        //  }
+        //}
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /node_modules/
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -36,35 +37,43 @@ module.exports = {
           name: '[name].[ext]?[hash]'
         }
       },
+      // Styles: Inject CSS into the head with source maps
       {
-        test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
-      }
+        test: /\.(scss|css)$/,
+        use: [
+          // Note: Only style-loader works for me !!!
+		  // 'vue-style-loader',
+		  'style-loader',
+          {loader: 'css-loader', options: {sourceMap: true, importLoaders: 1}},
+          {loader: 'sass-loader', options: {sourceMap: true}},
+        ],
+      },
     ]
   },
   plugins: [
-    new CopyWebpackPlugin([
-      { from: 'src/mobile.html', to: '../index.html' },
-      { from: 'src/web_display.html', to: '../game/index.html' },
-      { from: 'src/web_display_test.html', to: '../test.html' },
-    ])
+    new VueLoaderPlugin(),
+    new CopyWebpackPlugin(
+      {
+        patterns: [
+          { from: 'src/mobile.html', to: '../index.html' },
+          { from: 'src/web_display.html', to: '../game/index.html' },
+          { from: 'src/web_display_test.html', to: '../test.html' },
+        ]
+      }
+    )
   ],
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-    }
-  },
   devServer: {
     proxy : [{path: '/ws_game', target: 'ws://localhost:3000', ws: true}, {path: '/ws_controller', target: 'ws://localhost:3000', ws: true}],
     historyApiFallback: true,
-    noInfo: true,
-    publicPath: 'dist',
-    contentBase: 'dist'
+    devMiddleware: {
+      publicPath: 'dist'
+    },
+    static: 'dist'
   },
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: 'source-map'
 }
 
 if (process.env.NODE_ENV === 'production') {

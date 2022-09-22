@@ -17,7 +17,9 @@
 
 <script>
 export default {
+  inject: ['$game_connection', '$store'],
   name: 'game',
+
   mounted() {
     this.$game_connection.on_game_over = (data) => {
       if(data.err) {

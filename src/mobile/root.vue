@@ -9,7 +9,9 @@
 
 <script>
 export default {
+  inject: ['$game_connection', '$store'],
   name: 'root',
+
   mounted() {
     this.$game_connection.on_disconnect = (data) => {
       this.err_msg = `Uh Oh! Server semes to be down, retrying... <span class="fa fa-cog fa-spin"></span>`;
