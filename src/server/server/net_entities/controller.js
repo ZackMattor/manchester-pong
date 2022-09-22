@@ -1,6 +1,6 @@
-const EventEmitter = require('events');
+import EventEmitter from 'events';
 
-class Controller extends EventEmitter {
+export class Controller extends EventEmitter {
   constructor(con) {
     super();
 
@@ -52,5 +52,3 @@ class Controller extends EventEmitter {
     this.emit('close', this.con.id);
   }
 }
-
-module.exports = Controller;

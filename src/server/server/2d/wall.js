@@ -1,4 +1,4 @@
-class Wall {
+export class Wall {
   constructor(pA, pB) {
     this.pA = pA;
     this.pB = pB;
@@ -12,5 +12,3 @@ class Wall {
 
   }
 }
-
-module.exports = Wall;

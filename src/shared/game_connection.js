@@ -1,4 +1,6 @@
-class GameConnection {
+import WebSocket from 'isomorphic-ws';
+
+export class GameConnection {
   constructor(namespace) {
     this.namespace = namespace;
 
@@ -68,21 +70,23 @@ class GameConnection {
   }
 
   _socket_url() {
-    let loc = window.location;
-    let port = null;
-    let new_uri;
+    if(typeof window !== 'undefined') {
+      let loc = window.location;
+      let port = 3000;//null;
+      let new_uri;
 
-    if (loc.protocol === "https:") {
-      new_uri = "wss:";
+      if (loc.protocol === "https:") {
+        new_uri = "wss:";
+      } else {
+        new_uri = "ws:";
+      }
+
+      let port_section = port ? `:${port}` : '';
+      new_uri += `//${loc.hostname}${port_section}/${this.namespace}`;
+
+      return new_uri;
     } else {
-      new_uri = "ws:";
+      return `ws://localhost:3000/${this.namespace}`;
     }
-
-    let port_section = port ? `:${port}` : '';
-    new_uri += `//${loc.hostname}${port_section}/${this.namespace}`;
-
-    return new_uri;
   }
 }
-
-module.exports = GameConnection;

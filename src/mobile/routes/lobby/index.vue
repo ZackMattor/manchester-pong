@@ -8,7 +8,9 @@
 
 <script>
 export default {
+  inject: ['$game_connection', '$store'],
   name: 'lobby',
+
   mounted() {
     this.$game_connection.on_game_start = () => {
       this.$router.push('/game');
