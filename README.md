@@ -15,7 +15,7 @@ Go [HERE](https://pong.zackmattor.com/game) to try try out the full version! NOT
 # Technical Stuff
 
 ## Requirements
- - Node 10.X
+ - Node 16+
 
 ## Getting Started
 To get started run the following commands...

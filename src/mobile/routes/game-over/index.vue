@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  inject: ['$store'],
   name: 'GameOver',
 
   mounted() {

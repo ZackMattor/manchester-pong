@@ -1,7 +1,7 @@
 <template>
 <div class="wrap">
   <div class="keypad">
-    <div class="number" @click="clicked(n)" v-for="n in [1,2,3,4,5,6,7,8,9,0,'<']">
+    <div class="number" @click="clicked(n)" :key="n" v-for="n in [1,2,3,4,5,6,7,8,9,0,'<']">
       {{ n }}
     </div>
   </div>

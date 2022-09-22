@@ -1,7 +1,7 @@
-const EventEmitter = require('events');
-const Wall = require('../2d/wall.js');
+import EventEmitter from 'events';
+// import Wall from '../2d/wall.js';
 
-class Game extends EventEmitter{
+export class Game extends EventEmitter{
   constructor(con) {
     super();
 
@@ -301,5 +301,3 @@ class Game extends EventEmitter{
     this.intervals = [];
   }
 }
-
-module.exports = Game;

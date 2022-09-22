@@ -1,7 +1,7 @@
-const EventEmitter = require('events');
-const WebSocket = require('ws');
+import EventEmitter from 'events';
+import WebSocket from 'ws';
 
-class Connection extends EventEmitter {
+export class Connection extends EventEmitter {
   constructor(ws) {
     super();
 
@@ -70,5 +70,3 @@ class Connection extends EventEmitter {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
   }
 }
-
-module.exports = Connection;

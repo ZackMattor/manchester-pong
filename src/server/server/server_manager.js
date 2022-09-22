@@ -1,9 +1,10 @@
-const url = require('url');
-const Game = require('./net_entities/game.js');
-const Controller = require('./net_entities/controller.js');
-const Connection = require('./connection.js');
+import url from 'url';
 
-class ServerManager {
+import { Game } from './net_entities/game.js';
+import { Controller } from './net_entities/controller.js';
+import { Connection } from './connection.js';
+
+export class ServerManager {
   constructor(wss) {
     this.connections = {};
 
@@ -12,7 +13,7 @@ class ServerManager {
     wss.on('connection', this.on_connection_open.bind(this));
   }
 
-  on_connection_open(ws) {
+  on_connection_open(ws, request) {
     let con = new Connection(ws);
     let entity;
 
@@ -21,7 +22,8 @@ class ServerManager {
       entity: null
     };
 
-    const namespace = url.parse(ws.upgradeReq.url, true).href;
+    const namespace = url.parse(request.url, true).href;
+
     switch(namespace) {
       case '/ws_game':
         entity = (new Game(con));
@@ -41,7 +43,6 @@ class ServerManager {
   bind_attempt(bind_obj) {
     let token = bind_obj.token;
     let controller = bind_obj.controller;
-    let success = false;
     let player_id;
 
     console.log(`Controller trying to join a game with ${token}`);
@@ -67,5 +68,3 @@ class ServerManager {
     delete this.connections[id];
   }
 }
-
-module.exports = ServerManager;

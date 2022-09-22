@@ -11,7 +11,6 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, './dist/assets'),
-    //publicPath: '/dist/assets',
     filename: '[name].js'
   },
   module: {
@@ -19,12 +18,6 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        //options: {
-        //  loaders: {
-        //    'scss': 'vue-style-loader!css-loader!sass-loader',
-        //    'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
-        //  }
-        //}
       },
       {
         test: /\.js$/,
@@ -37,13 +30,10 @@ module.exports = {
           name: '[name].[ext]?[hash]'
         }
       },
-      // Styles: Inject CSS into the head with source maps
       {
         test: /\.(scss|css)$/,
         use: [
-          // Note: Only style-loader works for me !!!
-		  // 'vue-style-loader',
-		  'style-loader',
+          'style-loader',
           {loader: 'css-loader', options: {sourceMap: true, importLoaders: 1}},
           {loader: 'sass-loader', options: {sourceMap: true}},
         ],

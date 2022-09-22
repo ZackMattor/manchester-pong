@@ -2,6 +2,7 @@
   "name": "MillyardPong",
   "description": "Millyard Pong game",
   "version": "1.0.0",
+  "type": "module",
   "author": "Zack Mattor <zmattor@gmail.com>",
   "private": true,
   "scripts": {

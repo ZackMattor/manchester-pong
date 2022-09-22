@@ -1,11 +1,10 @@
 import '../shared/style.css';
 
 import { createApp } from 'vue';
-import { VueRouter, createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
+import { GameConnection } from '../shared/game_connection.js';
 
-import GameConnection from '../shared/game_connection.js';
 import jquery from 'jquery';
-
 import IndexComponent from './root.vue';
 import IndexRoute from './routes/index/index.vue';
 import GameOverRoute from './routes/game-over/index.vue';

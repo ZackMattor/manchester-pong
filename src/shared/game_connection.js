@@ -1,7 +1,6 @@
-let WebSocket = require('isomorphic-ws');
-WebSocket  = WebSocket.default ? WebSocket.default : WebSocket;
+import WebSocket from 'isomorphic-ws';
 
-class GameConnection {
+export class GameConnection {
   constructor(namespace) {
     this.namespace = namespace;
 
@@ -91,5 +90,3 @@ class GameConnection {
     }
   }
 }
-
-module.exports = GameConnection;

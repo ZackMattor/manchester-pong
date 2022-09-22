@@ -11,7 +11,6 @@
          v-on:touchstart="pressed('right')"
          v-on:touchend="released('right')"
          class="right"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
-    
   </div>
 </template>
 

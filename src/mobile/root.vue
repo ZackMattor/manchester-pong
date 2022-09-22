@@ -13,7 +13,7 @@ export default {
   name: 'root',
 
   mounted() {
-    this.$game_connection.on_disconnect = (data) => {
+    this.$game_connection.on_disconnect = () => {
       this.err_msg = `Uh Oh! Server semes to be down, retrying... <span class="fa fa-cog fa-spin"></span>`;
     };
   },

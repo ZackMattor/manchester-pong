@@ -1,9 +1,11 @@
-require('../shared/style.css');
-require('./style.css');
+import '../shared/style.css';
+import './style.css';
 
-const GameConnection = require('../shared/game_connection.js');
+import { GameConnection } from '../shared/game_connection.js';
 
-const $ = require('jquery');
+import jquery from 'jquery';
+
+window.$ = jquery;
 
 window.set_state = function(name) {
   $('.state').hide();
