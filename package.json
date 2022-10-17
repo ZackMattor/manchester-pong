@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@laser-dac/core": "^0.4.2",
+    "@laser-dac/draw": "^0.6.1",
     "@laser-dac/laserdock": "^0.4.2",
     "@laser-dac/simulator": "^0.3.4",
     "babel-core": "^6.26.3",
