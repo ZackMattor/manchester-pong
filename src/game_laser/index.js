@@ -2,7 +2,7 @@ import { GameConnection } from '../shared/game_connection.js';
 import { DAC } from '@laser-dac/core';
 import { Simulator } from '@laser-dac/simulator';
 import { Laserdock } from '@laser-dac/laserdock';
-import { Scene, Rect, HersheyFont, loadHersheyFont, Line, Circle } from '@laser-dac/draw';
+import { Path, Scene, Rect, HersheyFont, loadHersheyFont, Line, Circle } from '@laser-dac/draw';
 
 let gameState = null;
 let gameCode = null;
@@ -11,6 +11,8 @@ let p2State = {};
 let ballState = {};
 let fieldState = {};
 const paddleWidth = 0.3;
+
+const color = [0, 1, 0];
 
 function set_state(name) {
   console.log(`Current Game State: ${name}`);
@@ -32,12 +34,15 @@ async function game_init() {
   }
 
   await dac.start();
-  const scene = new Scene();
+  const scene = new Scene({
+    resolution: 10,
+  });
   function renderFrame() {
     if(!gameState) return;
 
     switch(gameState) {
       case 'idle':
+        let vals = [0, 0.1, 0.5, 1];
         scene.add(new HersheyFont({
           font,
           text: `${gameCode}`,
@@ -61,7 +66,7 @@ async function game_init() {
             x: ( p2State.pos / fieldState.width ) + ( fieldState.paddle_size / fieldState.width ),
             y: 1 - (fieldState.paddle_offset / fieldState.height),
           },
-          color: [0, 1, 0],
+          color,
           blankBefore: true,
           blankAfter: true,
         });
@@ -75,22 +80,27 @@ async function game_init() {
             x: ( p1State.pos / fieldState.width ) + ( fieldState.paddle_size / fieldState.width ),
             y: (fieldState.paddle_offset / fieldState.height),
           },
-          color: [0, 1, 0],
+          color,
           blankBefore: true,
           blankAfter: true,
         });
 
-        const ball = new Circle({
+        const ball = new Line({
+          from: { x: ballState.x / fieldState.width, y: ballState.y / fieldState.height, },
+          to: { x: ballState.x / fieldState.width + 0.1, y: ballState.y / fieldState.height -0.1},
+          color,
+          blankBefore: true,
+          blankAfter: true,
           radius: 0.01,
           x: ballState.x / fieldState.width,
           y: ballState.y / fieldState.height,
-          color: [0, 1, 0],
+          color,
         });
 
         const left =  new Line({
           from: { x: 0, y: 0, },
           to: { x: 0, y: 1, },
-          color: [0, 1, 0],
+          color,
           blankBefore: true,
           blankAfter: true,
         });
@@ -98,22 +108,22 @@ async function game_init() {
         const right =  new Line({
           from: { x: 1, y: 0, },
           to: { x: 1, y: 1, },
-          color: [0, 1, 0],
+          color,
           blankBefore: true,
           blankAfter: true,
         });
 
         scene.add(left);
-        scene.add(right);
         scene.add(p1);
         scene.add(p2);
         scene.add(ball);
+        scene.add(right);
         break;
     }
   }
 
   scene.start(renderFrame);
-  dac.stream(scene);
+  dac.stream(scene, 10000);
 
   game_connection.on_disconnect = () => {
    console.log(`Uh Oh! Server semes to be down, retrying... <span class="fa fa-cog fa-spin"></span>`);
