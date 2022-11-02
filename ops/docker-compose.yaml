@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  pong-backend:
+    image: "zackmattor/manchester-pong-backend"
+    ports:
+      - "3000:3000"
+    entrypoint: ["node", "src/server"]
+  pong-frontend:
+    image: "zackmattor/manchester-pong-frontend"
+    ports:
+      - "8000:80"
