@@ -68,11 +68,11 @@ async function game_init() {
 
         const p1 =  new Line({
           from: {
-            x: p1State.pos / fieldState.width,
+            x: ( p1State.pos / fieldState.width ) + ( fieldState.paddle_size / fieldState.width ),
             y: (fieldState.paddle_offset / fieldState.height),
           },
           to: {
-            x: ( p1State.pos / fieldState.width ) + ( fieldState.paddle_size / fieldState.width ),
+            x: p1State.pos / fieldState.width,
             y: (fieldState.paddle_offset / fieldState.height),
           },
           color: [0, 1, 0],
@@ -96,24 +96,25 @@ async function game_init() {
         });
 
         const right =  new Line({
-          from: { x: 1, y: 0, },
-          to: { x: 1, y: 1, },
+          from: { x: 1, y: 1, },
+          to: { x: 1, y: 0, },
           color: [0, 1, 0],
           blankBefore: true,
           blankAfter: true,
         });
 
         scene.add(left);
+        scene.add(p2);
         scene.add(right);
         scene.add(p1);
-        scene.add(p2);
-        scene.add(ball);
+
+        if(ball.y < 0.95) scene.add(ball);
         break;
     }
   }
 
   scene.start(renderFrame);
-  dac.stream(scene);
+  dac.stream(scene, 30000);
 
   game_connection.on_disconnect = () => {
    console.log(`Uh Oh! Server semes to be down, retrying... <span class="fa fa-cog fa-spin"></span>`);
