@@ -8,4 +8,4 @@ services:
   pong-frontend:
     image: "zackmattor/manchester-pong-frontend"
     ports:
-      - "8000:80"
+      - "80:80"
