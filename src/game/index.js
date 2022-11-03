@@ -1,5 +1,6 @@
 import '../shared/style.css';
 import './style.css';
+import QRCode from 'qrcode';
 
 import { GameConnection } from '../shared/game_connection.js';
 
@@ -25,7 +26,7 @@ $(() => {
   const center_line_height = 8;
   const center_line_gap = 10;
 
-  game_connection.on_disconnect = (data) => {
+  game_connection.on_disconnect = () => {
     let $alert = $('.alert.error');
 
     $alert.html(`Uh Oh! Server semes to be down, retrying... <span class="fa fa-cog fa-spin"></span>`);
@@ -34,13 +35,28 @@ $(() => {
 
   game_connection.on_token = (data) => {
     $('#token').html(data.current_join_token);
+    var canvas = document.getElementById('game-join');
+
+    let qrOpts = {
+      margin: 0,
+      scale: 5,
+      color: {
+        dark:"#000",
+        light:"#ccc"
+      }
+    };
+
+    QRCode.toCanvas(canvas, `http://pong.zmattor.me/?token=${ data.current_join_token }`, qrOpts, (error) => {
+      if (error) console.error(error)
+      console.log('success!');
+    });
   };
 
   game_connection.on_player_join = (data) => {
     console.log(`player ${data.id} joined`);
   };
 
-  game_connection.on_game_start = (data) => {
+  game_connection.on_game_start = () => {
     set_state('game');
   };
 
