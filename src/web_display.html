@@ -3,6 +3,7 @@
     <title>Manchester Pong | Game</title>
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <meta name="viewport" content="user-scalable=no">
     <script src="https://use.fontawesome.com/517a36681d.js"></script>
     <script src="/assets/game.js"></script>
     <script>
@@ -29,8 +30,9 @@
       <div class="step">
         <div class="num">1</div>
         <div class="step-content">
-          Join Game: <canvas id="game-join"></canvas>
-          <span class="callout larger" id="token">Connecting...</span>
+          <div style="margin-bottom: 15px;">Join Game</div>
+          <div><canvas id="game-join"></canvas></div>
+          <div class="callout larger" id="token">Connecting...</div>
         </div>
       </div>
 
