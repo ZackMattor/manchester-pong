@@ -97,13 +97,18 @@ $(() => {
     ctx.strokeStyle = '#333';
 
     for(let i=0; i<24; i++) {
-      ctx.fillRect(i * center_line_width + center_line_gap * i, canvas.height/2, center_line_width, center_line_height);
+      ctx.fillRect(
+        canvas.width/2,
+        i * center_line_width + center_line_gap * i,
+        center_line_height,
+        center_line_width,
+      );
     }
 
     // Player Scores
     ctx.font = `150px "Press Start 2P"`;
-    ctx.fillText(data.p1.score, 60, 900);
-    ctx.fillText(data.p2.score, 60, 1170);
+    ctx.fillText(data.p1.score, 750, 160);
+    ctx.fillText(data.p2.score, 1070, 160);
 
     // Ball
     ctx.beginPath();
@@ -112,11 +117,17 @@ $(() => {
     ctx.stroke();
 
     // Player 1
-    ctx.fillRect(data.p1.pos, data.gamefield.paddle_offset - paddleWidth, data.gamefield.paddle_size, paddleWidth);
-
+    //ctx.fillRect(data.p1.pos, data.gamefield.paddle_offset - paddleWidth, data.gamefield.paddle_size, paddleWidth);
+    ctx.fillRect(data.gamefield.paddle_offset - paddleWidth, data.p1.pos, paddleWidth, data.gamefield.paddle_size);
 
     // Player 2
-    ctx.fillRect(data.p2.pos, data.gamefield.height - data.gamefield.paddle_offset, data.gamefield.paddle_size, paddleWidth);
+    //ctx.fillRect(data.p2.pos, data.gamefield.height - data.gamefield.paddle_offset, data.gamefield.paddle_size, paddleWidth);
+    ctx.fillRect(
+      data.gamefield.width - data.gamefield.paddle_offset,
+      data.p2.pos,
+      paddleWidth,
+      data.gamefield.paddle_size
+    );
   };
 
   set_state('idle');

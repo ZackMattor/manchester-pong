@@ -4,13 +4,13 @@
          v-on:mouseup="released('left')"
          v-on:touchstart="pressed('left')"
          v-on:touchend="released('left')"
-         class="left"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+         class="left"><i class="fa fa-arrow-up" aria-hidden="true"></i></div>
 
     <div v-on:mousedown="pressed('right')"
          v-on:mouseup="released('right')"
          v-on:touchstart="pressed('right')"
          v-on:touchend="released('right')"
-         class="right"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+         class="right"><i class="fa fa-arrow-down" aria-hidden="true"></i></div>
   </div>
 </template>
 
