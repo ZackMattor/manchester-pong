@@ -20,6 +20,10 @@ body {
   margin: 40px;
 }
 
+.sub-title {
+  font-size: 44px;
+}
+
 .callout {
   font-weight: 800;
 }
@@ -81,4 +85,9 @@ hr {
   background-color: #f2dede;
   border-color: #ebcccc;
   color: #a94442;
+}
+
+.disable-dbl-tap-zoom {
+  touch-action: manipulation;
+  pointer-events: none;
 }
