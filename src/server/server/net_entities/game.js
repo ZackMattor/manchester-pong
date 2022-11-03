@@ -68,6 +68,8 @@ export class Game extends EventEmitter{
   }
 
   reset() {
+    this.active_tokens = [];
+    this.generate_token();
     this._clear_intervals();
     this.construct_field();
   }

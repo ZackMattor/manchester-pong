@@ -21,6 +21,8 @@ export default {
   mounted() {
     this.$game_connection.on_bind_status = this.on_bind_status.bind(this);
 
+    console.log(this.$router.query);
+
     let game_token_param = ( new URLSearchParams(window.location.search) ).get('game_token');
 
     if(game_token_param) {
