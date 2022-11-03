@@ -46,7 +46,7 @@ $(() => {
       }
     };
 
-    QRCode.toCanvas(canvas, `http://pong.zmattor.me/?token=${ data.current_join_token }`, qrOpts, (error) => {
+    QRCode.toCanvas(canvas, `http://pong.zmattor.me/?game_token=${ data.current_join_token }`, qrOpts, (error) => {
       if (error) console.error(error)
       console.log('success!');
     });

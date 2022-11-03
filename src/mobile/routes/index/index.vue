@@ -20,6 +20,14 @@ export default {
 
   mounted() {
     this.$game_connection.on_bind_status = this.on_bind_status.bind(this);
+
+    let game_token_param = ( new URLSearchParams(window.location.search) ).get('game_token');
+
+    if(game_token_param) {
+      setTimeout(() => {
+        this.$game_connection.send('bind_attempt', { token: game_token_param });
+      }, 500);
+    }
   },
 
   methods: {
