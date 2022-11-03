@@ -1,48 +1,48 @@
-## Javascript Node CircleCI 2.0 configuration file
-##
-## Check https://circleci.com/docs/2.0/language-javascript/ for more details
-##
-#version: 2
-#jobs:
-#  build:
-#    docker:
-#      # specify the version you desire here
-#      - image: circleci/node:10
+# Javascript Node CircleCI 2.0 configuration file
 #
-#    working_directory: ~/app
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-#    steps:
-#      - checkout
-#      - restore_cache:
-#          keys:
-#          - v1-dependencies-{{ checksum "package.json" }}
-#          # fallback to using the latest cache if no exact match is found
-#          - v1-dependencies-
-#      - run: npm install
-#      - save_cache:
-#          paths:
-#            - node_modules
-#          key: v1-dependencies-{{ checksum "package.json" }}
-#
-#      - run: npm test
-#
-#      - setup_remote_docker
-#      - deploy:
-#          name: deplopy image on master
-#          command: |
-#            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-#              npm run build
-#              docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-#
-#              # Build the frontend image
-#              docker build -t zackmattor/manchester-pong-frontend:latest -f DockerfileFrontend .
-#              docker tag zackmattor/manchester-pong-frontend:latest zackmattor/manchester-pong-frontend:$CIRCLE_SHA1
-#              docker push zackmattor/manchester-pong-frontend:$CIRCLE_SHA1
-#              docker push zackmattor/manchester-pong-frontend:latest
-#
-#              # Build the backend image
-#              docker build -t zackmattor/manchester-pong-backend:latest -f DockerfileBackend .
-#              docker tag zackmattor/manchester-pong-backend:latest zackmattor/manchester-pong-backend:$CIRCLE_SHA1
-#              docker push zackmattor/manchester-pong-backend:$CIRCLE_SHA1
-#              docker push zackmattor/manchester-pong-backend:latest
-#            fi
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:10
+
+    working_directory: ~/app
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: npm test
+
+      - setup_remote_docker
+      - deploy:
+          name: deplopy image on master
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              npm run build
+              docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+              # Build the frontend image
+              docker build -t zackmattor/manchester-pong-frontend:latest -f DockerfileFrontend .
+              docker tag zackmattor/manchester-pong-frontend:latest zackmattor/manchester-pong-frontend:$CIRCLE_SHA1
+              docker push zackmattor/manchester-pong-frontend:$CIRCLE_SHA1
+              docker push zackmattor/manchester-pong-frontend:latest
+
+              # Build the backend image
+              docker build -t zackmattor/manchester-pong-backend:latest -f DockerfileBackend .
+              docker tag zackmattor/manchester-pong-backend:latest zackmattor/manchester-pong-backend:$CIRCLE_SHA1
+              docker push zackmattor/manchester-pong-backend:$CIRCLE_SHA1
+              docker push zackmattor/manchester-pong-backend:latest
+            fi
