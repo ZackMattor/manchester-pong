@@ -1,7 +1,7 @@
 <template>
 <div class="wrap">
   <div class="keypad">
-    <div class="number" v-touch="clicked(n)" :key="n" v-for="n in [1,2,3,4,5,6,7,8,9,0,'<']">
+    <div class="number" @click="clicked(n)" :key="n" v-for="n in [1,2,3,4,5,6,7,8,9,0,'<']">
       {{ n }}
     </div>
   </div>
@@ -13,9 +13,7 @@ export default {
   name: 'app',
   methods: {
     clicked(n) {
-      return (_direction, _mouseEvent) => {
-        this.$emit('number', n);
-      };
+      this.$emit('number', n);
     }
   }
 }
