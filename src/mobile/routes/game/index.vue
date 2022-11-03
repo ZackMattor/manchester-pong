@@ -1,15 +1,11 @@
 <template>
   <div id="game">
-    <div v-on:mousedown="pressed('left')"
-         v-on:mouseup="released('left')"
-         v-on:touchstart="pressed('left')"
-         v-on:touchend="released('left')"
+    <div v-touch:press="pressed('left')"
+         v-touch:release="released('left')"
          class="left"><i class="fa fa-arrow-up" aria-hidden="true"></i></div>
 
-    <div v-on:mousedown="pressed('right')"
-         v-on:mouseup="released('right')"
-         v-on:touchstart="pressed('right')"
-         v-on:touchend="released('right')"
+    <div v-touch:press="pressed('right')"
+         v-touch:release="released('right')"
          class="right"><i class="fa fa-arrow-down" aria-hidden="true"></i></div>
   </div>
 </template>
