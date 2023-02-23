@@ -3,7 +3,7 @@ services:
   pong-backend:
     image: "zackmattor/manchester-pong-backend"
     ports:
-      - "32123:3000"
+      - "32123:32123"
     entrypoint: ["node", "src/server"]
   pong-frontend:
     image: "zackmattor/manchester-pong-frontend"

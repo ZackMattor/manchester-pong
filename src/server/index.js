@@ -5,7 +5,7 @@ import { ServerManager } from './server/server_manager.js';
 const server = http.createServer();
 const wss = new WebSocketServer({ server });
 
-let port = process.env.MANCHESTER_PONG_PORT || 3000;
+let port = process.env.MANCHESTER_PONG_PORT || 32123;
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
