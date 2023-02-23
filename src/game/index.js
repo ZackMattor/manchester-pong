@@ -1,5 +1,6 @@
 import '../shared/style.css';
 import './style.css';
+import QRCode from 'qrcode';
 
 import { GameConnection } from '../shared/game_connection.js';
 
@@ -25,7 +26,7 @@ $(() => {
   const center_line_height = 8;
   const center_line_gap = 10;
 
-  game_connection.on_disconnect = (data) => {
+  game_connection.on_disconnect = () => {
     let $alert = $('.alert.error');
 
     $alert.html(`Uh Oh! Server semes to be down, retrying... <span class="fa fa-cog fa-spin"></span>`);
@@ -34,13 +35,28 @@ $(() => {
 
   game_connection.on_token = (data) => {
     $('#token').html(data.current_join_token);
+    var canvas = document.getElementById('game-join');
+
+    let qrOpts = {
+      margin: 0,
+      scale: 5,
+      color: {
+        dark:"#000",
+        light:"#ccc"
+      }
+    };
+
+    QRCode.toCanvas(canvas, `http://pong.zmattor.me/?game_token=${ data.current_join_token }`, qrOpts, (error) => {
+      if (error) console.error(error)
+      console.log('success!');
+    });
   };
 
   game_connection.on_player_join = (data) => {
     console.log(`player ${data.id} joined`);
   };
 
-  game_connection.on_game_start = (data) => {
+  game_connection.on_game_start = () => {
     set_state('game');
   };
 
@@ -81,13 +97,18 @@ $(() => {
     ctx.strokeStyle = '#333';
 
     for(let i=0; i<24; i++) {
-      ctx.fillRect(i * center_line_width + center_line_gap * i, canvas.height/2, center_line_width, center_line_height);
+      ctx.fillRect(
+        canvas.width/2,
+        i * center_line_width + center_line_gap * i,
+        center_line_height,
+        center_line_width,
+      );
     }
 
     // Player Scores
     ctx.font = `150px "Press Start 2P"`;
-    ctx.fillText(data.p1.score, 60, 900);
-    ctx.fillText(data.p2.score, 60, 1170);
+    ctx.fillText(data.p1.score, 750, 160);
+    ctx.fillText(data.p2.score, 1070, 160);
 
     // Ball
     ctx.beginPath();
@@ -96,11 +117,17 @@ $(() => {
     ctx.stroke();
 
     // Player 1
-    ctx.fillRect(data.p1.pos, data.gamefield.paddle_offset - paddleWidth, data.gamefield.paddle_size, paddleWidth);
-
+    //ctx.fillRect(data.p1.pos, data.gamefield.paddle_offset - paddleWidth, data.gamefield.paddle_size, paddleWidth);
+    ctx.fillRect(data.gamefield.paddle_offset - paddleWidth, data.p1.pos, paddleWidth, data.gamefield.paddle_size);
 
     // Player 2
-    ctx.fillRect(data.p2.pos, data.gamefield.height - data.gamefield.paddle_offset, data.gamefield.paddle_size, paddleWidth);
+    //ctx.fillRect(data.p2.pos, data.gamefield.height - data.gamefield.paddle_offset, data.gamefield.paddle_size, paddleWidth);
+    ctx.fillRect(
+      data.gamefield.width - data.gamefield.paddle_offset,
+      data.p2.pos,
+      paddleWidth,
+      data.gamefield.paddle_size
+    );
   };
 
   set_state('idle');

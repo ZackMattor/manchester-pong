@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Manchester Pong | Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <script src="https://use.fontawesome.com/517a36681d.js"></script>
@@ -24,37 +25,33 @@
     </div>
 
     <div class="state" id="state-idle">
-      <div class="title">Play Pong</div>
+      <div class="title">Let's Play Pong!</div>
 
       <div class="step">
         <div class="num">1</div>
         <div class="step-content">
-          Navigate to <br><span class="callout">pong.zackmattor.com</span>
+          <div style="margin-bottom: 15px;">Join Game</div>
+          <div><canvas id="game-join"></canvas></div>
+          <div class="callout larger" id="token">Connecting...</div>
         </div>
       </div>
 
-      <div class="step">
+      <!---<div class="step">
         <div class="num">2</div>
         <div class="step-content">
           Enter the game token
           <br><hr>
           <span class="callout larger" id="token">Connecting...</span>
         </div>
-      </div>
+      </div> -->
 
       <div class="step">
-        <div class="num">3</div>
-        <div class="step-content">
-          Game will start after two players join
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="num">4</div>
+        <div class="num">2</div>
         <div class="step-content">
           First to 5 wins!
         </div>
       </div>
+      <div class="sub-title">Dedicated to Ralph H. Baer (1966-2014)</div>
     </div>
 
     <div class="state" id="state-game">

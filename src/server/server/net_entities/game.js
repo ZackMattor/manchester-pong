@@ -29,8 +29,8 @@ export class Game extends EventEmitter{
     this.intervals.push(setInterval(this.generate_token.bind(this), (1000 * 60)));
 
     this.gamefield = {
-      width: 1080,
-      height: 1920,
+      width: 1920,
+      height: 1080,
       paddle_size: 230,
       paddle_offset: 50
     };
@@ -50,18 +50,26 @@ export class Game extends EventEmitter{
       }
     ];
 
+
+    this.reset_ball();
+    this.ball_paused = false;
+  }
+
+  reset_ball() {
+    var random_boolean = Math.random() < 0.5;
+
     this.ball = {
       x: this.gamefield.width / 2,
       y: this.gamefield.height / 2,
       radius: 35,
-      vx: 10,
-      vy: 8
+      vx: 8 * (random_boolean ? 1 : -1),
+      vy: 10
     };
-
-    this.ball_paused = false;
   }
 
   reset() {
+    this.active_tokens = [];
+    this.generate_token();
     this._clear_intervals();
     this.construct_field();
   }
@@ -115,8 +123,8 @@ export class Game extends EventEmitter{
         }
 
         if(controller.get_key_state('right')) {
-          if(player.pos + player_speed + this.gamefield.paddle_size < this.gamefield.width) player.pos += player_speed;
-          else player.pos = this.gamefield.width - this.gamefield.paddle_size;
+          if(player.pos + player_speed + this.gamefield.paddle_size < this.gamefield.height) player.pos += player_speed;
+          else player.pos = this.gamefield.height - this.gamefield.paddle_size;
         }
       }
     });
@@ -125,23 +133,23 @@ export class Game extends EventEmitter{
     let in_p1, in_p2;
 
     let player = this.players[0];
-    let distance_to_paddle = (bfy - ball_radius) - this.gamefield.paddle_offset;
+    let distance_to_paddle = (bfx - ball_radius) - this.gamefield.paddle_offset;
 
-    in_p1 = bfy < (this.gamefield.paddle_offset + ball_radius);
+    in_p1 = bfx < (this.gamefield.paddle_offset + ball_radius);
     in_p1 = in_p1 && distance_to_paddle > -Math.abs(this.ball.vx);
-    in_p1 = in_p1 && (bfx + ball_radius) > player.pos;
-    in_p1 = in_p1 && bfx < (player.pos + this.gamefield.paddle_size);
+    in_p1 = in_p1 && (bfy + ball_radius) > player.pos;
+    in_p1 = in_p1 && bfy < (player.pos + this.gamefield.paddle_size);
 
     player = this.players[1];
-    distance_to_paddle = -((bfy + ball_radius) - (this.gamefield.height - this.gamefield.paddle_offset));
+    distance_to_paddle = -((bfx + ball_radius) - (this.gamefield.width - this.gamefield.paddle_offset));
 
-    in_p2 = bfy > (this.gamefield.height - this.gamefield.paddle_offset - ball_radius);
+    in_p2 = bfx > (this.gamefield.width - this.gamefield.paddle_offset - ball_radius);
     in_p2 = in_p2 && distance_to_paddle > -Math.abs(this.ball.vx);
-    in_p2 = in_p2 && (bfx + ball_radius) > player.pos;
-    in_p2 = in_p2 && bfx < (player.pos + this.gamefield.paddle_size);
+    in_p2 = in_p2 && (bfy + ball_radius) > player.pos;
+    in_p2 = in_p2 && bfy < (player.pos + this.gamefield.paddle_size);
 
     if(in_p1 || in_p2) {
-      invert_y = true;
+      invert_x = true;
     }
 
     //this.walls.forEach((wall) => {
@@ -149,18 +157,18 @@ export class Game extends EventEmitter{
     //});
 
     // Wall Detection
-    let top_wall = -(ball_radius * 2);
-    let bottom_wall = this.gamefield.height + (ball_radius * 2);
+    let p0_bounds = -(ball_radius * 2);
+    let p1_bounds = this.gamefield.width + (ball_radius * 2);
 
-    if(bfx + ball_radius > this.gamefield.width || (bfx - ball_radius) < 0) invert_x = true;
-    if(bfy + ball_radius > bottom_wall || bfy < top_wall) {
-      if(bfy + ball_radius > this.gamefield.height) this.player_scored(0);
-      if(bfy < top_wall) this.player_scored(1);
+    if(bfy + ball_radius > this.gamefield.height || (bfy - ball_radius) < 0) invert_y = true;
+    if(bfx + ball_radius > p1_bounds || bfx < p0_bounds) {
+      if(bfx + ball_radius > this.gamefield.width) this.player_scored(0);
+      if(bfx < p0_bounds) this.player_scored(1);
 
-      invert_y = true;
+      invert_x = true;
     }
 
-    if(invert_x) this.ball.vx *= -1;
+    if(invert_x) this.ball.vx *= -1.1;
     if(invert_y) this.ball.vy *= -1;
 
     // Process ball movement
@@ -171,8 +179,7 @@ export class Game extends EventEmitter{
   }
 
   player_scored(id) {
-    this.ball.x = this.gamefield.width / 2;
-    this.ball.y = this.gamefield.height / 2;
+    this.reset_ball();
 
     this.players[id].score++;
 

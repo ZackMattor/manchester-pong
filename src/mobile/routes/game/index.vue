@@ -1,16 +1,16 @@
 <template>
   <div id="game">
-    <div v-on:mousedown="pressed('left')"
-         v-on:mouseup="released('left')"
-         v-on:touchstart="pressed('left')"
-         v-on:touchend="released('left')"
-         class="left"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+    <div v-on:mousedown="pressed('left', $event)"
+         v-on:mouseup="released('left', $event)"
+         v-on:touchstart="pressed('left', $event)"
+         v-on:touchend="released('left', $event)"
+         class="left disable-dbl-tap-zoom"><i class="fa fa-arrow-up" aria-hidden="true"></i></div>
 
-    <div v-on:mousedown="pressed('right')"
-         v-on:mouseup="released('right')"
-         v-on:touchstart="pressed('right')"
-         v-on:touchend="released('right')"
-         class="right"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+    <div v-on:mousedown="pressed('right', $event)"
+         v-on:mouseup="released('right', $event)"
+         v-on:touchstart="pressed('right', $event)"
+         v-on:touchend="released('right', $event)"
+         class="right disable-dbl-tap-zoom"><i class="fa fa-arrow-down" aria-hidden="true"></i></div>
   </div>
 </template>
 
@@ -31,11 +31,13 @@ export default {
   },
 
   methods: {
-    pressed(key) {
+    pressed(key, evt) {
+      evt.preventDefault();
       this.set_key_state(key, true);
     },
 
-    released(key) {
+    released(key, evt) {
+      evt.preventDefault();
       this.set_key_state(key, false);
     },
 

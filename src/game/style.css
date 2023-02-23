@@ -6,7 +6,7 @@
 
 body {
   font-family: Muli;
-  font-size: 128px;
+  font-size: 90px;
   background-color: #333;
   color: #eee;
 }
@@ -17,7 +17,11 @@ body {
 }
 
 .title {
-  margin: 100px;
+  margin: 40px;
+}
+
+.sub-title {
+  font-size: 44px;
 }
 
 .callout {
@@ -27,7 +31,7 @@ body {
 .step {
   background-color: #ccc;
   color: #333;
-  font-size: 70px;
+  font-size: 40px;
   padding: 40px;
   width: 880px;
   margin: 105px auto;
@@ -36,7 +40,7 @@ body {
 
 .num {
   position: absolute;
-  font-size: 79px;
+  font-size: 69px;
   top: -57px;
   left: -64px;
   border-radius: 230px;
@@ -57,7 +61,7 @@ hr {
 }
 
 .larger {
-  font-size: 120px;
+  font-size: 44px;
 }
 
 .alert-box {
@@ -81,4 +85,9 @@ hr {
   background-color: #f2dede;
   border-color: #ebcccc;
   color: #a94442;
+}
+
+.disable-dbl-tap-zoom {
+  touch-action: manipulation;
+  pointer-events: none;
 }
