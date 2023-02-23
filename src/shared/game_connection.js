@@ -72,7 +72,7 @@ export class GameConnection {
   _socket_url() {
     if(typeof window !== 'undefined') {
       let loc = window.location;
-      let port = 3000;//null;
+      let port = 32123;//null;
       let new_uri;
 
       if (loc.protocol === "https:") {
